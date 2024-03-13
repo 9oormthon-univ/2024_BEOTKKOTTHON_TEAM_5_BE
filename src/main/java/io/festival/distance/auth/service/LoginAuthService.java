@@ -24,11 +24,11 @@ public class LoginAuthService {
     private final MemberRepository memberRepository;
 
     public TokenDto login(LoginDto loginDto) {
-        if (!memberRepository.existsBySchoolEmail(loginDto.getSchoolEmail())) {
+        if (!memberRepository.existsByLoginId(loginDto.getLoginId())) {
             throw new DistanceException(ErrorCode.NOT_EXIST_ADMIN);
         }
         UsernamePasswordAuthenticationToken authenticationToken =
-                new UsernamePasswordAuthenticationToken(loginDto.getSchoolEmail(), loginDto.getPassword());
+                new UsernamePasswordAuthenticationToken(loginDto.getLoginId(), loginDto.getPassword());
         // authenticate 메소드가 실행이 될 때 CustomUserDetailsService class의 loadUserByUsername 메소드가 실행
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
         // 해당 객체를 SecurityContextHolder에 저장하고

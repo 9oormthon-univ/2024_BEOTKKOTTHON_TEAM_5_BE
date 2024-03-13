@@ -21,10 +21,10 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     // 로그인시에 DB에서 유저정보와 권한정보를 가져와서 해당 정보를 기반으로 userdetails.User 객체를 생성해 리턴
-    public UserDetails loadUserByUsername(final String schoolEmail) {
-        Member member = memberRepository.findOneWithAuthoritiesBySchoolEmail(schoolEmail)
+    public UserDetails loadUserByUsername(final String loginId) {
+        Member member = memberRepository.findOneWithAuthoritiesByLoginId(loginId)
                 .orElseThrow(() -> new DistanceException(ErrorCode.NOT_EXIST_MEMBER));
-        return createAdmin(schoolEmail,member);
+        return createAdmin(loginId,member);
     }
 
     private User createAdmin(String id, Member member) {
