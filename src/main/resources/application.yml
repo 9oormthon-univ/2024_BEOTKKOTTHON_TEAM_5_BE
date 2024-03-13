@@ -1,0 +1,27 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/distance?characterEncoding=UTF-8&useSSL=false&serverTimezone=UTC&&allowPublicKeyRetrieval=true
+    username: root
+    password: wnstjr6522
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+        default_batch_fetch_size: 100
+        dialect: org.hibernate.dialect.MySQL8Dialect
+logging.level:
+  org.hibernate.SQL: debug
+  org.hibernate.type: info
+  org.springframework.security: DEBUG
+
+jwt:
+  header: Authorization
+  secret: 9340d95b6018cb37fedfce6f47c1b0b4426f87ada2a465c4f378dc8aca952d68677a58e5176c15d2c2c5167158224dbc509143c4042cda14b5c8120653068bc7XdyYETl1PVR1fHK3DRQwFTEXo+cXA28g1uEb2sTUN/Q=
+  token-validity-in-seconds: 86400
