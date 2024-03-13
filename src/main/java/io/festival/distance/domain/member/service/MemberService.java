@@ -14,10 +14,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.w3c.dom.DOMException;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -26,10 +24,11 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final ValidSignup validSignup;
     private final MemberTagService memberTagService;
+    private static final String PREFIX="#";
     /** NOTE
      * 회원가입
      * 중복된 이메일인지 확인
-     * 중복된 닉네임인지 확인
+     * 중복된 아이디인지 확인
      * 사용자가 입력한 비밀번호가 동일한지 중복체크
      */
     @Transactional
@@ -38,6 +37,7 @@ public class MemberService {
             throw new IllegalStateException("입력이 유효하지 않습니다!");
         Member member = Member.builder()
                 .schoolEmail(signDto.schoolEmail())
+                .loginId(signDto.loginId())
                 .password(encoder.encode(signDto.password()))
                 .gender(signDto.gender())
                 .nickName(signDto.nickName())
@@ -48,7 +48,10 @@ public class MemberService {
                 .authority(Authority.ROLE_USER)
                 .activated(true)
                 .build();
-       return memberRepository.save(member).getMemberId();
+       memberRepository.save(member);
+       String nickName= signDto.nickName()+PREFIX+member.getMemberId();
+       member.memberNicknameUpdate(nickName);
+       return member.getMemberId();
     }
 
     /** NOTE

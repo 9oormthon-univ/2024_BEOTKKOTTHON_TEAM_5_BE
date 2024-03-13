@@ -24,6 +24,9 @@ public class Member extends BaseTimeEntity {
     @Column(name = "school_email")
     private String schoolEmail;
 
+    @Column(name = "login_id")
+    private String loginId;
+
     @Column(name = "encrypted_password")
     private String password;
 
@@ -60,5 +63,9 @@ public class Member extends BaseTimeEntity {
     public void memberInfoUpdate(MemberInfoDto memberInfoDto){
         this.mbti=memberInfoDto.mbti();
         this.memberCharacter=memberInfoDto.memberCharacter();
+    }
+
+    public void memberNicknameUpdate(String nickName){
+        this.nickName=nickName;
     }
 }

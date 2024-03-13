@@ -5,6 +5,7 @@ package io.festival.distance.domain.member.dto;
  */
 public record MemberSignDto(
         String schoolEmail,
+        String loginId,
         String password,
         String checkPassword,
         String gender,
