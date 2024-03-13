@@ -9,11 +9,9 @@ import org.springframework.stereotype.Component;
 public class ValidSignup {
     private final ValidLoginId validLoginId;
     private final ValidSchoolEmail validSchoolEmail;
-    private final ValidPassword validPassword;
 
     public boolean validationSignup(MemberSignDto signDto){
         return validSchoolEmail.duplicateCheckSchoolEmail(signDto.schoolEmail())
-                && validLoginId.duplicateCheckLoginId(signDto.nickName())
-                && validPassword.duplicateCheckPassword(signDto.password(),signDto.checkPassword());
+                && validLoginId.duplicateCheckLoginId(signDto.nickName());
     }
 }

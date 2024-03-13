@@ -29,7 +29,6 @@ public class MemberService {
      * 회원가입
      * 중복된 이메일인지 확인
      * 중복된 아이디인지 확인
-     * 사용자가 입력한 비밀번호가 동일한지 중복체크
      */
     @Transactional
     public Long createMember(MemberSignDto signDto) {
@@ -68,13 +67,13 @@ public class MemberService {
      * MemberTag Table에서 사용자가 고른 Tag 등록
      */
     @Transactional
-    public Long generateMemberInfo(Long memberId,MemberInfoDto memberInfoDto) {
+    public Long updateMemberInfo(Long memberId, MemberInfoDto memberInfoDto) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new DistanceException(ErrorCode.NOT_EXIST_MEMBER));
         member.memberInfoUpdate(memberInfoDto);
         List<MemberTagDto> tagList = memberInfoDto.memberTagDto().stream()
                 .toList();
-        memberTagService.generateTag(member,tagList);
+        memberTagService.updateTag(member,tagList);
         return memberId;
     }
 }

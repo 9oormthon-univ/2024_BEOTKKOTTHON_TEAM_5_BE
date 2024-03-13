@@ -20,7 +20,7 @@ public class MemberTagService {
      * 사용자가 고른 태그를 갯수와 상관없이 MemberTag테이블에 저장
      */
     @Transactional
-    public void generateTag(Member member, List<MemberTagDto> memberTagDto){
+    public void updateTag(Member member, List<MemberTagDto> memberTagDto){
         List<MemberTag> memberTagList=new ArrayList<>();
 
         for (MemberTagDto tagDto : memberTagDto) {

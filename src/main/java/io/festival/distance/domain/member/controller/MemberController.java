@@ -5,6 +5,7 @@ import io.festival.distance.domain.member.dto.MemberSignDto;
 import io.festival.distance.domain.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -30,11 +31,11 @@ public class MemberController {
         return ResponseEntity.ok(memberService.withDrawal(memberId));
     }
 
-    /** TODO
+    /** NOTE
      * 멤버 프로필 등록
      */
     @PostMapping("/info/{memberId}")
     public ResponseEntity<Long> createMemberProfile(@PathVariable Long memberId, @RequestBody MemberInfoDto memberInfoDto){
-        return ResponseEntity.ok(memberService.generateMemberInfo(memberId,memberInfoDto));
+        return ResponseEntity.ok(memberService.updateMemberInfo(memberId,memberInfoDto));
     }
 }
