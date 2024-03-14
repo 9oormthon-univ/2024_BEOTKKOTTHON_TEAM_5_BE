@@ -1,8 +1,8 @@
 spring:
   datasource:
     url: jdbc:mysql://localhost:3306/distance?characterEncoding=UTF-8&useSSL=false&serverTimezone=UTC&&allowPublicKeyRetrieval=true
-    username: Add ??? DB ??
-    password: Add ??? DB ??
+    username: root
+    password: wnstjr6522
     driver-class-name: com.mysql.cj.jdbc.Driver
   mvc:
     pathmatch:
