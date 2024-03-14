@@ -8,6 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "member")
@@ -25,6 +27,8 @@ public class Member extends BaseTimeEntity {
     private String schoolEmail;
 
     @Column(name = "login_id")
+    @Valid
+    @NotNull
     private String loginId;
 
     @Column(name = "encrypted_password")

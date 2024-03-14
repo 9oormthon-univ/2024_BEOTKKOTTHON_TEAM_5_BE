@@ -30,6 +30,9 @@ public class MemberService {
      * 중복된 이메일인지 확인
      * 중복된 아이디인지 확인
      */
+    /** TODO
+     * signdto -> signUpDto로 네이밍 변경
+     */
     @Transactional
     public Long createMember(MemberSignDto signDto) {
         if(!validSignup.validationSignup(signDto))

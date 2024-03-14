@@ -12,6 +12,6 @@ public class ValidSignup {
 
     public boolean validationSignup(MemberSignDto signDto){
         return validSchoolEmail.duplicateCheckSchoolEmail(signDto.schoolEmail())
-                && validLoginId.duplicateCheckLoginId(signDto.nickName());
+                && validLoginId.duplicateCheckLoginId(signDto.loginId());
     }
 }
