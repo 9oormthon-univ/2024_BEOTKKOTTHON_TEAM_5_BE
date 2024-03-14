@@ -25,10 +25,9 @@ public class GpsService {
 				.orElseThrow(() -> new DistanceException(ErrorCode.NOT_EXIST_MEMBER));
 		member.memberGpsUpdate(gpsDto);
 		return GpsResponseDto.builder()
-			.memberId(member.getMemberId())
-			.latitude(member.getLatitude())
-			.longitude(member.getLongitude())
-			.build();
-			//new GpsResponseDto(member.getMemberId(), member.getLatitude(), member.getLongitude());
+				.memberId(member.getMemberId())
+				.latitude(member.getLatitude())
+				.longitude(member.getLongitude())
+				.build();
 	}
 }
