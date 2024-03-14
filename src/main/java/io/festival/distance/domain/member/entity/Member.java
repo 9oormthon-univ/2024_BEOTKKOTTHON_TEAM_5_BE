@@ -1,6 +1,7 @@
 package io.festival.distance.domain.member.entity;
 
 import io.festival.distance.domain.base.BaseTimeEntity;
+import io.festival.distance.domain.gps.dto.GpsDto;
 import io.festival.distance.domain.member.dto.MemberInfoDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -61,14 +62,23 @@ public class Member extends BaseTimeEntity {
     @Column(name = "activated")
     private boolean activated;
 
+    @Column(name = "latitude")
+    private double latitude;
+
+    @Column(name = "longitude")
+    private double longitude;
+
     @Enumerated(EnumType.STRING)
     private Authority authority;
 
-    public void memberInfoUpdate(MemberInfoDto memberInfoDto){
-        this.mbti=memberInfoDto.mbti();
-        this.memberCharacter=memberInfoDto.memberCharacter();
+    public void memberInfoUpdate(MemberInfoDto memberInfoDto) {
+        this.mbti = memberInfoDto.mbti();
+        this.memberCharacter = memberInfoDto.memberCharacter();
     }
-
+    public void memberGpsUpdate(GpsDto gpsDto) {
+        this.latitude = gpsDto.latitude();
+        this.longitude = gpsDto.longitude();
+    }
     public void memberNicknameUpdate(String nickName){
         this.nickName=nickName;
     }
