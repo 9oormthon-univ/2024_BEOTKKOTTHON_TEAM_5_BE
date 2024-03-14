@@ -1,3 +1,3 @@
 package io.festival.distance.domain.gps.dto;
 
-public record GpsResponseDto (Long memberId, String longitude, String latitude){ }
+public record GpsResponseDto (Long memberId, double longitude, double latitude){ }

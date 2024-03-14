@@ -59,10 +59,10 @@ public class Member extends BaseTimeEntity {
     private boolean activated;
 
     @Column(name = "latitude")
-    private String latitude;
+    private double latitude;
 
     @Column(name = "longitude")
-    private String longitude;
+    private double longitude;
 
     @Enumerated(EnumType.STRING)
     private Authority authority;
