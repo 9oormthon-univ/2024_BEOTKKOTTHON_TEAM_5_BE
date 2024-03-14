@@ -10,7 +10,6 @@ permissions:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
@@ -20,19 +19,9 @@ jobs:
       with:
         java-version: '17'
         distribution: 'temurin'
-    - uses: actions/checkout@v2
-    - name: Set YML
-      run: |
-          mkdir -p src/main/resources
-          find src
-    - name: Add permission
-      run: chmod +x gradlew
 
     - name: Test with Gradle
       run: ./gradlew test
-
-    - name: Clean with Gradle
-      run: ./gradlew clean
 
     - name: Build with Gradle
       run: ./gradlew clean build
