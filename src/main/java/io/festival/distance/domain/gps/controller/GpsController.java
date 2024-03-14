@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.festival.distance.domain.gps.dto.GpsDto;
+import io.festival.distance.domain.gps.dto.GpsResponseDto;
 import io.festival.distance.domain.gps.service.GpsService;
 import lombok.RequiredArgsConstructor;
 
@@ -23,7 +24,7 @@ public class GpsController {
 	 * 유저 현재 위치 정보 갱신 API
 	 */
 	@PostMapping("/update/{memberId}")
-	public ResponseEntity<Long> updateGps(@PathVariable Long memberId, @RequestBody GpsDto gpsDto) {
+	public ResponseEntity<GpsResponseDto> updateGps(@PathVariable Long memberId, @RequestBody GpsDto gpsDto) {
 		return ResponseEntity.ok(gpsService.updateGps(memberId, gpsDto));
 	}
 }
