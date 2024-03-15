@@ -38,4 +38,8 @@ public class ChatMessage extends BaseTimeEntity { //채팅 메시지
     @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.REMOVE)
     @JsonIgnore
     private ChatRoom chatRoom;
+
+    public void readCountUpdate(int currentMemberCount){
+        this.unreadCount-=currentMemberCount;
+    }
 }

@@ -21,6 +21,9 @@ public class RoomMember { //채팅방 참여자
     @Column(name = "room_member_id")
     private Long roomMemberId;
 
+    @Column(name = "last_read_message_id")
+    private Long lastReadMessageId;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "chatroom_id")
     private ChatRoom chatRoom;
@@ -28,4 +31,8 @@ public class RoomMember { //채팅방 참여자
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
+
+    public void updateMessageId(Long chatMessageId){
+        this.lastReadMessageId=chatMessageId;
+    }
 }

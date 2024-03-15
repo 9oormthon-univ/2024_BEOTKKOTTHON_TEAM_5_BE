@@ -33,7 +33,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         }
         GrantedAuthority grantedAuthorities = new SimpleGrantedAuthority(member.getAuthority().toString());
 
-        return new User(member.getSchoolEmail(),
+        return new User(member.getLoginId(),
                 member.getPassword(),
                 Set.of(grantedAuthorities));
     }

@@ -11,6 +11,7 @@ import io.festival.distance.domain.membertag.service.MemberTagService;
 import io.festival.distance.exception.DistanceException;
 import io.festival.distance.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.parameters.P;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -78,5 +79,15 @@ public class MemberService {
                 .toList();
         memberTagService.updateTag(member,tagList);
         return memberId;
+    }
+
+    public Member findMember(Long memberId){
+        return memberRepository.findById(memberId)
+                .orElseThrow(()-> new DistanceException(ErrorCode.NOT_EXIST_MEMBER));
+    }
+
+    public Member findByLoginId(String loginId){
+        return memberRepository.findByLoginId(loginId)
+                .orElseThrow(()-> new DistanceException(ErrorCode.NOT_EXIST_MEMBER1));
     }
 }

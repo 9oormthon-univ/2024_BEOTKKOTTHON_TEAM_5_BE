@@ -12,6 +12,9 @@ public enum ErrorCode {
     NOT_CORRECT_PASSWORD(HttpStatusCode.BAD_REQUEST.getStatus(),"비밀번호가 일치하지 않습니다!"),
     NOT_EXIST_ADMIN(HttpStatusCode.BAD_REQUEST.getStatus(), "존재하지 않는 관리자입니다!"),
     NOT_EXIST_MEMBER(HttpStatusCode.BAD_REQUEST.getStatus(), "존재하지 않는 유저입니다!"),
+    NOT_EXIST_MEMBER1(HttpStatusCode.BAD_REQUEST.getStatus(), "존재하지 않는 유저입니다!!"),
+    NOT_EXIST_MEMBER2(HttpStatusCode.BAD_REQUEST.getStatus(), "존재하지 않는 유저입니다!!!"),
+    NOT_EXIST_MEMBER3(HttpStatusCode.BAD_REQUEST.getStatus(), "존재하지 않는 유저입니다!!!"),
 
     NOT_EXIST_AUTHENTICATION(HttpStatusCode.UNAUTHORIZED.getStatus(), "Security Context에 인증 정보가 없습니다!");
     private final int status;

@@ -1,5 +1,6 @@
 package io.festival.distance.domain.conversation.chat.dto;
 
+import io.festival.distance.domain.conversation.chat.entity.ChatMessage;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,7 +17,18 @@ public class ChatMessageResponseDto {
     private String chatMessage;
     private Long senderId;
     private String senderName;
+    private int unreadCount;
+    private Long messageId;
 
     @DateTimeFormat(pattern = "HH:mm:ss")
     private LocalDateTime sendDt;
+
+    public ChatMessageResponseDto(ChatMessage message) {
+        this.messageId=message.getChatMessageId();
+        this.chatMessage = message.getChatMessage();
+        this.senderId = message.getSenderId();
+        this.senderName = message.getSenderName();
+        this.unreadCount = message.getUnreadCount();
+        this.sendDt = message.getCreateDt();
+    }
 }
