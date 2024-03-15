@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.festival.distance.domain.gps.dto.GpsDto;
 import io.festival.distance.domain.gps.dto.GpsResponseDto;
-import io.festival.distance.domain.gps.dto.matchResponseDto;
+import io.festival.distance.domain.gps.dto.MatchResponseDto;
 import io.festival.distance.domain.gps.service.GpsService;
 import lombok.RequiredArgsConstructor;
 
@@ -34,7 +34,7 @@ public class GpsController {
 	 * 현재 유저 위치의 반경에 다른 사용자들의 위치가 속하는지 판단 API
 	 */
 	@GetMapping(value = "/matching/{memberId}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<matchResponseDto> matching(@PathVariable Long memberId) {
+	public ResponseEntity<MatchResponseDto> matching(@PathVariable Long memberId) {
 		return ResponseEntity.ok(gpsService.matchUser(memberId));
 	}
 }
