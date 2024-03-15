@@ -7,11 +7,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import io.festival.distance.domain.gps.dto.GpsDto;
 import io.festival.distance.domain.gps.dto.GpsResponseDto;
-import io.festival.distance.domain.gps.dto.matchResponseDto;
+import io.festival.distance.domain.gps.dto.MatchResponseDto;
+import io.festival.distance.domain.gps.dto.MatchUserDto;
 import io.festival.distance.domain.member.entity.Member;
 import io.festival.distance.domain.member.repository.MemberRepository;
 import io.festival.distance.exception.DistanceException;
 import io.festival.distance.exception.ErrorCode;
+import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -38,24 +40,33 @@ public class GpsService {
 	 // id, latitude, longitude 말고도 모든 data를 가져와야하나?
 	 */
 	@Transactional
-	public matchResponseDto matchUser(Long memberId) {
+	public MatchResponseDto matchUser(Long memberId) {
+		final double searchRange = 200; // 200미터 이내 반경
+
 		Member centerUser = memberRepository.findById(memberId)
 			.orElseThrow(() -> new DistanceException(ErrorCode.NOT_EXIST_MEMBER));
 		double centerLongitude = centerUser.getLongitude();
 		double centerLatitude = centerUser.getLatitude();
 
 		// 멤버를 필터링하고, 필터링된 결과를 List<Member>로 변환
-		List<Member> matchedUserList = memberRepository.findAll().stream()
+		List<MatchUserDto> matchedUserList = memberRepository.findAll().stream()
 			.filter(user -> {
 				double userLongitude = user.getLongitude();
 				double userLatitude = user.getLatitude();
 				double distance = calculateDistance(centerLatitude, centerLongitude, userLatitude, userLongitude);
 				System.out.println(user.getMemberId() + ": " + distance);
-				return 0 < distance && distance <= 200; // 200미터 이내의 user 필터링 (본인 제외)
+				return 0 < distance && distance <= searchRange; // 반경 내 user 필터링 (본인 제외)
 			})
 			.limit(4) // 최대 4명
+			.map(user -> MatchUserDto.builder() //필요한 정보만 넘기기 위함
+				.memberId(user.getMemberId())
+				.mbti(user.getMbti())
+				.nickName(user.getNickName())
+				.department(user.getDepartment())
+				.memberCharacter(user.getMemberCharacter())
+				.build())
 			.toList();
-		return matchResponseDto.builder()
+		return MatchResponseDto.builder()
 			.matchedUsers(matchedUserList)
 			.build();
 	}
