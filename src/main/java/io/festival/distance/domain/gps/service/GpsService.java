@@ -41,7 +41,7 @@ public class GpsService {
 	 */
 	@Transactional
 	public MatchResponseDto matchUser(Long memberId) {
-		final double searchRange = 200; // 200미터 이내 반경
+		final double searchRange = 200; // 200m 이내 반경
 
 		Member centerUser = memberRepository.findById(memberId)
 			.orElseThrow(() -> new DistanceException(ErrorCode.NOT_EXIST_MEMBER));
@@ -74,22 +74,29 @@ public class GpsService {
 	 * 두 점 사이의 거리를 계산하는 메서드 (Haversine 공식 이용)
 	 */
 	private static double calculateDistance(double x1, double y1, double x2, double y2) {
-		double distance; // 두 지점 사이 거리 (리턴값)
 		double radius = 6371; // 지구 반지름(km)
 		double toRadian = Math.PI / 180;
 
-		double deltaLatitude = Math.abs(x1 - x2) * toRadian;
-		double deltaLongitude = Math.abs(y1 - y2) * toRadian;
+		// 위도, 경도를 라디안으로 변환
+		double lat1 = x1 * toRadian;
+		double lon1 = y1 * toRadian;
+		double lat2 = x2 * toRadian;
+		double lon2 = y2 * toRadian;
 
+		// 라디안 단위로 변환된 위도와 경도의 차이
+		double deltaLatitude = Math.abs(lat1 - lat2);
+		double deltaLongitude = Math.abs(lon1 - lon2);
+
+		// 하버사인 공식
 		double sinDeltaLat = Math.sin(deltaLatitude / 2);
 		double sinDeltaLng = Math.sin(deltaLongitude / 2);
 		double squareRoot = Math.sqrt(
 			sinDeltaLat * sinDeltaLat +
-				Math.cos(x1 * toRadian) * Math.cos(x2 * toRadian) * sinDeltaLng * sinDeltaLng);
+				Math.cos(lat1) * Math.cos(lat2) * sinDeltaLng * sinDeltaLng);
 
-		distance = 2 * radius * Math.asin(squareRoot);
+		double distance = 2 * radius * Math.asin(squareRoot);
+		distance *= 1000; // m 단위로 변환
 
 		return distance;
 	}
-
 }
