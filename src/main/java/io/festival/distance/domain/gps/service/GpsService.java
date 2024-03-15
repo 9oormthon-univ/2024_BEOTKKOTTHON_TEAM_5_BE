@@ -1,10 +1,13 @@
 package io.festival.distance.domain.gps.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import io.festival.distance.domain.gps.dto.GpsDto;
 import io.festival.distance.domain.gps.dto.GpsResponseDto;
+import io.festival.distance.domain.gps.dto.matchResponseDto;
 import io.festival.distance.domain.member.entity.Member;
 import io.festival.distance.domain.member.repository.MemberRepository;
 import io.festival.distance.exception.DistanceException;
@@ -20,7 +23,7 @@ public class GpsService {
 	 * member 테이블의 longitude, latitude 갱신
 	 */
 	@Transactional
-	public GpsResponseDto updateGps(Long memberId, GpsDto gpsDto) {
+	public GpsResponseDto updateMemberGps(Long memberId, GpsDto gpsDto) {
 		Member member = memberRepository.findById(memberId)
 				.orElseThrow(() -> new DistanceException(ErrorCode.NOT_EXIST_MEMBER));
 		member.memberGpsUpdate(gpsDto);
@@ -30,4 +33,52 @@ public class GpsService {
 				.longitude(member.getLongitude())
 				.build();
 	}
+	/** NOTE
+	 * member 테이블에서 특정 유저의 latitude, longitude 가져오기
+	 // id, latitude, longitude 말고도 모든 data를 가져와야하나?
+	 */
+	@Transactional
+	public matchResponseDto matchUser(Long memberId) {
+		Member centerUser = memberRepository.findById(memberId)
+			.orElseThrow(() -> new DistanceException(ErrorCode.NOT_EXIST_MEMBER));
+		double centerLongitude = centerUser.getLongitude();
+		double centerLatitude = centerUser.getLatitude();
+
+		// 멤버를 필터링하고, 필터링된 결과를 List<Member>로 변환
+		List<Member> matchedUserList = memberRepository.findAll().stream()
+			.filter(user -> {
+				double userLongitude = user.getLongitude();
+				double userLatitude = user.getLatitude();
+				double distance = calculateDistance(centerLatitude, centerLongitude, userLatitude, userLongitude);
+				System.out.println(user.getMemberId() + ": " + distance);
+				return 0 < distance && distance <= 200; // 200미터 이내의 user 필터링 (본인 제외)
+			})
+			.limit(4) // 최대 4명
+			.toList();
+		return matchResponseDto.builder()
+			.matchedUsers(matchedUserList)
+			.build();
+	}
+	/** NOTE
+	 * 두 점 사이의 거리를 계산하는 메서드 (Haversine 공식 이용)
+	 */
+	private static double calculateDistance(double x1, double y1, double x2, double y2) {
+		double distance; // 두 지점 사이 거리 (리턴값)
+		double radius = 6371; // 지구 반지름(km)
+		double toRadian = Math.PI / 180;
+
+		double deltaLatitude = Math.abs(x1 - x2) * toRadian;
+		double deltaLongitude = Math.abs(y1 - y2) * toRadian;
+
+		double sinDeltaLat = Math.sin(deltaLatitude / 2);
+		double sinDeltaLng = Math.sin(deltaLongitude / 2);
+		double squareRoot = Math.sqrt(
+			sinDeltaLat * sinDeltaLat +
+				Math.cos(x1 * toRadian) * Math.cos(x2 * toRadian) * sinDeltaLng * sinDeltaLng);
+
+		distance = 2 * radius * Math.asin(squareRoot);
+
+		return distance;
+	}
+
 }
