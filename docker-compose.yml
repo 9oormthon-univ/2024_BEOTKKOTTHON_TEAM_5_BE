@@ -14,10 +14,10 @@ services:
       MYSQL_ROOT_HOST: '%'
       MYSQL_DATABASE: ${MYSQL_DATABASE}
     networks:
-      - spring-network
+      - distance-network
 
   app:
-    image: junseok1204/distance-0.0.12-snapshot
+    image: junseok1204/distance-0.0.13-snapshot
     container_name: app-container
     ports:
       - 8080:8080
@@ -30,7 +30,7 @@ services:
     links:
       - db
     networks:
-      - spring-network
+      - distance-network
     restart: always
 
 networks:
