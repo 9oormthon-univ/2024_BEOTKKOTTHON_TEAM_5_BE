@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/com/member")
+@RequestMapping("/member")
 @RequiredArgsConstructor
 @CrossOrigin
 public class MemberController {

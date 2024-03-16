@@ -17,7 +17,7 @@ import io.festival.distance.domain.gps.service.GpsService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/com/gps")
+@RequestMapping("/gps")
 @RequiredArgsConstructor //gpsService 생성자 자동 생성
 @CrossOrigin //모든 외부 도메인의 요청을 허용한다.
 public class GpsController {
