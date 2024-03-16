@@ -13,11 +13,15 @@ services:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_ROOT_HOST: '%'
       MYSQL_DATABASE: ${MYSQL_DATABASE}
+    command:
+      - "mysqld"
+      - "--character-set-server=utf8mb4"
+      - "--collation-server=utf8mb4_unicode_ci"
     networks:
       - distance-network
 
   app:
-    image: junseok1204/distance-0.0.13-snapshot
+    image: junseok1204/distance-0.0.14-snapshot
     container_name: app-container
     ports:
       - 8080:8080
