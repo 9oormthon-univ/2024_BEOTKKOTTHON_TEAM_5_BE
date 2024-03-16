@@ -21,7 +21,7 @@ services:
       - distance-network
 
   app:
-    image: junseok1204/distance-0.0.14-snapshot
+    image: junseok1204/distance-0.0.15-snapshot
     container_name: app-container
     ports:
       - 8080:8080
@@ -38,7 +38,7 @@ services:
     restart: always
 
 networks:
-  spring-network:
+  distance-network:
 
 volumes:
   mysql-data:
