@@ -16,7 +16,7 @@ services:
       - spring-network
 
   app:
-    image: junseok1204/distance-0.0.5-snapshot
+    image: junseok1204/distance-0.0.6-snapshot
     container_name: app-container
     ports:
       - 8080:8080
