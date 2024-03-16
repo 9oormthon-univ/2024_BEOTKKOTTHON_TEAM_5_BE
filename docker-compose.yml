@@ -11,12 +11,13 @@ services:
       - mysql-data:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_ROOT_HOST: '%'
       MYSQL_DATABASE: ${MYSQL_DATABASE}
     networks:
       - spring-network
 
   app:
-    image: junseok1204/distance-0.0.7-snapshot
+    image: junseok1204/distance-0.0.8-snapshot
     container_name: app-container
     ports:
       - 8080:8080
