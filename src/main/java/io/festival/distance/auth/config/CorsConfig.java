@@ -20,7 +20,7 @@ public class CorsConfig {
         config.addAllowedOrigin("https://dis-tance.comㅈ");
         config.addAllowedOrigin("http://localhost:8080");
 
-        source.registerCorsConfiguration("/com/**", config);
+        source.registerCorsConfiguration("/**", config);
         return new CorsFilter(source);
     }
 }
