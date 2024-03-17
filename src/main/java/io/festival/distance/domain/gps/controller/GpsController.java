@@ -26,6 +26,7 @@ public class GpsController {
 	/** NOTE
 	 * 유저 현재 위치 정보 갱신 API
 	 */
+
 	@PostMapping("/update/{memberId}")
 	public ResponseEntity<GpsResponseDto> updateGps(@PathVariable Long memberId, @RequestBody GpsDto gpsDto) {
 		return ResponseEntity.ok(gpsService.updateMemberGps(memberId, gpsDto));
