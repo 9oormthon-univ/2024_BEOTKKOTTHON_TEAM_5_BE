@@ -1,17 +1,16 @@
 package io.festival.distance.domain.member.service;
 
-import io.festival.distance.domain.member.dto.MemberInfoDto;
-import io.festival.distance.domain.member.dto.MemberSignDto;
-import io.festival.distance.domain.member.dto.MemberTagDto;
+import io.festival.distance.domain.member.dto.*;
 import io.festival.distance.domain.member.entity.Authority;
 import io.festival.distance.domain.member.entity.Member;
 import io.festival.distance.domain.member.repository.MemberRepository;
+import io.festival.distance.domain.member.valid.ValidLoginId;
 import io.festival.distance.domain.member.valid.ValidSignup;
+import io.festival.distance.domain.memberhobby.service.MemberHobbyService;
 import io.festival.distance.domain.membertag.service.MemberTagService;
 import io.festival.distance.exception.DistanceException;
 import io.festival.distance.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.parameters.P;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,7 +23,9 @@ public class MemberService {
     private final PasswordEncoder encoder;
     private final MemberRepository memberRepository;
     private final ValidSignup validSignup;
+    private final ValidLoginId validLoginId;
     private final MemberTagService memberTagService;
+    private final MemberHobbyService memberHobbyService;
     private static final String PREFIX="#";
     /** NOTE
      * 회원가입
@@ -69,15 +70,21 @@ public class MemberService {
     /** NOTE
      * Member Table에서 mbti, 멤버 캐릭터 수정
      * MemberTag Table에서 사용자가 고른 Tag 등록
+     * MemberHobby Table에서 사용자가 고른 Hobby등록
      */
     @Transactional
     public Long updateMemberInfo(Long memberId, MemberInfoDto memberInfoDto) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new DistanceException(ErrorCode.NOT_EXIST_MEMBER));
         member.memberInfoUpdate(memberInfoDto);
-        List<MemberTagDto> tagList = memberInfoDto.memberTagDto().stream()
+        List<MemberTagDto> tagList = memberInfoDto.memberTagDto()
+                .stream()
                 .toList();
-        memberTagService.updateTag(member,tagList);
+        List<MemberHobbyDto> hobbyList = memberInfoDto.memberHobbyDto()
+                .stream().
+                toList();
+        memberTagService.updateTag(member,tagList); //태그 저장
+        memberHobbyService.updateHobby(member,hobbyList); //취미 저장
         return memberId;
     }
 
@@ -89,5 +96,47 @@ public class MemberService {
     public Member findByLoginId(String loginId){
         return memberRepository.findByLoginId(loginId)
                 .orElseThrow(()-> new DistanceException(ErrorCode.NOT_EXIST_MEMBER1));
+    }
+
+    @Transactional(readOnly = true)
+    public AccountResponseDto memberAccount(Long memberId) {
+        Member member = findMember(memberId);
+        return AccountResponseDto.builder()
+                .loginId(member.getLoginId())
+                .password(member.getPassword())
+                .gender(member.getGender())
+                .telNum(member.getTelNum())
+                .build();
+    }
+
+    @Transactional
+    public Long modifyAccount(Long memberId, AccountRequestDto accountRequestDto) {
+        Member member = findMember(memberId);
+        if(!validLoginId.duplicateCheckLoginId(accountRequestDto.loginId()))
+            throw new IllegalStateException("입력이 유효하지 않습니다!");
+        String encryptedPassword=encoder.encode(accountRequestDto.password());
+        member.memberAccountModify(accountRequestDto,encryptedPassword);
+        return memberId;
+    }
+
+    @Transactional(readOnly = true)
+    public MemberInfoDto memberProfile(Long memberId) { //멤버 프로필 조회
+        Member member = findMember(memberId);
+        List<MemberHobbyDto> hobbyDtoList = memberHobbyService.showHobby(member);
+        List<MemberTagDto> tagDtoList = memberTagService.showTag(member);
+        return MemberInfoDto.builder()
+                .memberCharacter(member.getMemberCharacter())
+                .mbti(member.getMbti())
+                .memberTagDto(tagDtoList)
+                .memberHobbyDto(hobbyDtoList)
+                .build();
+    }
+
+    public Long modifyProfile(Long memberId, MemberInfoDto memberInfoDto) { // 사용자가 입력한 값이 들어있음
+        Member member = findMember(memberId);
+        member.memberInfoUpdate(memberInfoDto); //mbti랑 멤버 캐릭터 이미지 수정
+        memberTagService.modifyTag(member,memberInfoDto.memberTagDto());
+        memberHobbyService.modifyHobby(member,memberInfoDto.memberHobbyDto());
+        return memberId;
     }
 }

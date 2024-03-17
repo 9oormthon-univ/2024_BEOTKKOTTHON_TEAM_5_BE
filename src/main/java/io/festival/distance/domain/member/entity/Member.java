@@ -2,6 +2,7 @@ package io.festival.distance.domain.member.entity;
 
 import io.festival.distance.domain.base.BaseTimeEntity;
 import io.festival.distance.domain.gps.dto.GpsDto;
+import io.festival.distance.domain.member.dto.AccountRequestDto;
 import io.festival.distance.domain.member.dto.MemberInfoDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,6 +12,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.util.Base64;
 
 @Entity
 @Table(name = "member")
@@ -81,5 +83,12 @@ public class Member extends BaseTimeEntity {
     }
     public void memberNicknameUpdate(String nickName){
         this.nickName=nickName;
+    }
+
+    public void memberAccountModify(AccountRequestDto accountRequestDto,String encrypted_password){
+        this.loginId=accountRequestDto.loginId();
+        this.password=encrypted_password;
+        this.gender=accountRequestDto.gender();
+        this.telNum=accountRequestDto.telNum();
     }
 }
