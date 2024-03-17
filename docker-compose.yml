@@ -18,10 +18,10 @@ services:
       - "--character-set-server=utf8mb4"
       - "--collation-server=utf8mb4_unicode_ci"
     networks:
-      - distance-network
+      - distance-networked
 
   app:
-    image: junseok1204/distance-0.0.15-snapshot
+    image: junseok1204/distance-0.0.20-snapshot
     container_name: app-container
     ports:
       - 8080:8080
@@ -34,11 +34,11 @@ services:
     links:
       - db
     networks:
-      - distance-network
+      - distance-networked
     restart: always
 
 networks:
-  distance-network:
+  distance-networked:
 
 volumes:
   mysql-data:
