@@ -15,7 +15,7 @@ public class ValidLoginId {
 
     public boolean duplicateCheckLoginId(String loginId){
         if(Objects.isNull(loginId))
-            throw new DistanceException(ErrorCode.EXIST_NICKNAME);
+            throw new DistanceException(ErrorCode.NOT_NULL_NICKNAME);
         if(memberRepository.existsByLoginId(loginId))
             throw new DistanceException(ErrorCode.EXIST_NICKNAME);
         return true;
