@@ -17,6 +17,7 @@ public class CorsConfig {
         config.addAllowedHeader("*"); //모든 header 응답 허용
         config.addAllowedMethod("*"); //모든 post,get,put,delete,patch의 응답 허용
         config.addAllowedOrigin("http://localhost:3000");
+        config.addAllowedOrigin("https://dis-tance.comㅈ");
         config.addAllowedOrigin("http://localhost:8080");
 
         source.registerCorsConfiguration("/com/**", config);
