@@ -27,4 +27,8 @@ public class MemberTag {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
+
+    public void modifyTag(String tagName){
+        this.tagName=tagName;
+    }
 }

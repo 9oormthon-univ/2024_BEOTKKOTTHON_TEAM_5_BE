@@ -1,5 +1,6 @@
 package io.festival.distance.domain.membertag.service;
 
+import io.festival.distance.domain.member.dto.MemberHobbyDto;
 import io.festival.distance.domain.member.dto.MemberTagDto;
 import io.festival.distance.domain.member.entity.Member;
 import io.festival.distance.domain.membertag.entity.MemberTag;
@@ -10,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.IntStream;
 
 @Service
 @RequiredArgsConstructor
@@ -31,5 +33,27 @@ public class MemberTagService {
             memberTagList.add(memberTag);
         }
         memberTagRepository.saveAll(memberTagList);
+    }
+
+
+    @Transactional(readOnly = true)
+    public List<MemberTagDto> showTag(Member member){
+        List<MemberTag> allByMember = memberTagRepository.findAllByMember(member);
+        List<MemberTagDto> tagDtoList=new ArrayList<>();
+        for(MemberTag tag:allByMember){
+            MemberTagDto tagDto = MemberTagDto.builder()
+                    .tag(tag.getTagName())
+                    .build();
+            tagDtoList.add(tagDto);
+        }
+        return tagDtoList;
+    }
+
+    @Transactional
+    public void modifyTag(Member member, List<MemberTagDto> memberTagDto){
+        List<MemberTag> allByMember = memberTagRepository.findAllByMember(member);
+        IntStream.range(0, allByMember.size()).forEach(i -> {
+            allByMember.get(i).modifyTag(memberTagDto.get(i).tag());
+        });
     }
 }
