@@ -26,13 +26,13 @@ public class ChatRoomController {
     private final ChatMessageService chatMessageService;
 
     @PostMapping("/create")
-    public ResponseEntity<ChatRoomDto> createRoom(@RequestBody ChatRoomDto chatRoomDto, Principal principal){
+    public ResponseEntity<Long> createRoom(@RequestBody ChatRoomDto chatRoomDto, Principal principal){
         return ResponseEntity.ok(chatRoomService.generateRoom(chatRoomDto,principal));
     }
 
     @GetMapping
-    public ResponseEntity<List<ChatRoomInfoDto>> showAllRoom(){
-        return ResponseEntity.ok(chatRoomService.findAllRoom());
+    public ResponseEntity<List<ChatRoomInfoDto>> showAllRoom(Principal principal){
+        return ResponseEntity.ok(chatRoomService.findAllRoom(principal.getName()));
     }
 
     @GetMapping("/{chatRoomId}") //채팅방에 들어온 경우
