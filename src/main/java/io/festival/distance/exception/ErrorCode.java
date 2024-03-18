@@ -16,6 +16,7 @@ public enum ErrorCode {
     NOT_EXIST_MEMBER1(HttpStatusCode.BAD_REQUEST.getStatus(), "존재하지 않는 유저입니다!!"),
     NOT_EXIST_MEMBER2(HttpStatusCode.BAD_REQUEST.getStatus(), "존재하지 않는 유저입니다!!!"),
     NOT_EXIST_MEMBER3(HttpStatusCode.BAD_REQUEST.getStatus(), "존재하지 않는 유저입니다!!!"),
+    NOT_NULL_MEMBER_INFO(HttpStatusCode.LENGTH_REQUIRED.getStatus(), "멤버 프로필을 등록하지 않았습니다!"),
 
     NOT_EXIST_AUTHENTICATION(HttpStatusCode.UNAUTHORIZED.getStatus(), "Security Context에 인증 정보가 없습니다!");
     private final int status;
