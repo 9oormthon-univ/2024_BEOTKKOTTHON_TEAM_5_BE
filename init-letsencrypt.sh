@@ -9,7 +9,7 @@ domains=(api.dis-tance.com)
 rsa_key_size=4096
 data_path="./nginx/certbot"
 email="wnstjr120422@naver.com"
-staging=1
+staging=0
 
 if [ -d "$data_path" ]; then
   read -p "Existing data found for $domains. Continue and replace existing certificate? (y/N) " decision

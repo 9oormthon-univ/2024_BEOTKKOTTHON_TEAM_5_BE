@@ -39,7 +39,7 @@ services:
   nginx:
     image: nginx:1.15-alpine
     restart: unless-stopped
-    container_name: grida-nginx
+    container_name: distance-nginx
     ports:
       - "80:80"
       - "443:443"
