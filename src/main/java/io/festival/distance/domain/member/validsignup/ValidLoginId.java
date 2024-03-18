@@ -1,4 +1,4 @@
-package io.festival.distance.domain.member.valid;
+package io.festival.distance.domain.member.validsignup;
 
 import io.festival.distance.domain.member.repository.MemberRepository;
 import io.festival.distance.exception.DistanceException;
