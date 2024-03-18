@@ -31,6 +31,7 @@ public class ChatRoomService {
     public Long generateRoom(ChatRoomDto chatRoomDto, Principal principal) {
         Member member1 = memberRepository.findById(chatRoomDto.getMemberId())
                 .orElseThrow(() -> new DistanceException(ErrorCode.EXIST_NICKNAME));
+
         Member member2 = memberRepository.findByLoginId(principal.getName())
                 .orElseThrow(()-> new DistanceException(ErrorCode.NOT_EXIST_MEMBER));
 
@@ -65,13 +66,13 @@ public class ChatRoomService {
                 dtoList.add(dto);
             });
         }
-
         return dtoList;
     }
 
     public void addRoomMember(Long chatRoomId, List<Member> member) {
         ChatRoom chatRoom = chatRoomRepository.findById(chatRoomId)
                 .orElseThrow(() -> new IllegalStateException("존재하지 않는 방"));
+
         for (Member m : member) {
             RoomMember roomMember = RoomMember.builder()
                     .chatRoom(chatRoom)

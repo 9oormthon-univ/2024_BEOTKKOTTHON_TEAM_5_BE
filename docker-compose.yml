@@ -21,7 +21,7 @@ services:
       - distance-networked
 
   app:
-    image: junseok1204/distance-0.0.22-snapshot
+    image: junseok1204/distance-0.0.23-snapshot
     container_name: app-container
     ports:
       - 8080:8080
@@ -36,6 +36,7 @@ services:
     networks:
       - distance-networked
     restart: always
+
   nginx:
     image: nginx:1.15-alpine
     restart: unless-stopped
