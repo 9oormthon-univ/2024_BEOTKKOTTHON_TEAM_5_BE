@@ -5,12 +5,11 @@ import io.festival.distance.domain.member.dto.AccountResponseDto;
 import io.festival.distance.domain.member.dto.MemberInfoDto;
 import io.festival.distance.domain.member.dto.MemberSignDto;
 import io.festival.distance.domain.member.service.MemberService;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.swing.plaf.SpinnerUI;
+import java.security.Principal;
 
 @RestController
 @RequestMapping("/member")
@@ -30,33 +29,33 @@ public class MemberController {
     /** NOTE
      * 회원탈퇴 API
      */
-    @DeleteMapping("/{memberId}")
-    public ResponseEntity<Long> delete(@PathVariable Long memberId){
-        return ResponseEntity.ok(memberService.withDrawal(memberId));
+    @DeleteMapping
+    public ResponseEntity<String> delete(Principal principal){
+        return ResponseEntity.ok(memberService.withDrawal(principal.getName()));
     }
 
     /** NOTE
      * 멤버 프로필 등록
      */
-    @PostMapping("/info/{memberId}")
-    public ResponseEntity<Long> createMemberProfile(@PathVariable Long memberId, @RequestBody MemberInfoDto memberInfoDto){
-        return ResponseEntity.ok(memberService.updateMemberInfo(memberId,memberInfoDto));
+    @PostMapping("/info")
+    public ResponseEntity<Long> createMemberProfile(Principal principal, @RequestBody MemberInfoDto memberInfoDto){
+        return ResponseEntity.ok(memberService.updateMemberInfo(principal.getName(),memberInfoDto));
     }
 
     /** NOTE
      * 멤버 계정 조회
      */
-    @GetMapping("/account/{memberId}")
-    public ResponseEntity<AccountResponseDto> showAccount(@PathVariable Long memberId){
-        return ResponseEntity.ok(memberService.memberAccount(memberId));
+    @GetMapping("/account")
+    public ResponseEntity<AccountResponseDto> showAccount(Principal principal){
+        return ResponseEntity.ok(memberService.memberAccount(principal.getName()));
     }
 
     /** NOTE
      * 멤버 계정 수정
      */
-    @PatchMapping("/account/update/{memberId}")
-    public ResponseEntity<Long> updateAccount(@PathVariable Long memberId,@RequestBody AccountRequestDto accountRequestDto){
-        return ResponseEntity.ok(memberService.modifyAccount(memberId,accountRequestDto));
+    @PatchMapping("/account/update")
+    public ResponseEntity<Long> updateAccount(Principal principal,@RequestBody AccountRequestDto accountRequestDto){
+        return ResponseEntity.ok(memberService.modifyAccount(principal.getName(),accountRequestDto));
     }
 
     /** NOTE
@@ -70,8 +69,8 @@ public class MemberController {
     /** NOTE
      * 멤버 프로필 수정
      */
-    @PatchMapping("/profile/update/{memberId}")
-    public ResponseEntity<Long> updateProfile(@PathVariable Long memberId,@RequestBody MemberInfoDto memberInfoDto){
-        return ResponseEntity.ok(memberService.modifyProfile(memberId,memberInfoDto));
+    @PatchMapping("/profile/update")
+    public ResponseEntity<Long> updateProfile(Principal principal,@RequestBody MemberInfoDto memberInfoDto){
+        return ResponseEntity.ok(memberService.modifyProfile(principal.getName(),memberInfoDto));
     }
 }
