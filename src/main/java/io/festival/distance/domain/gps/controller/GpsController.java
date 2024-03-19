@@ -17,7 +17,7 @@ import io.festival.distance.domain.gps.service.GpsService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/gps")
+@RequestMapping("/api/gps")
 @RequiredArgsConstructor //gpsService 생성자 자동 생성
 @CrossOrigin //모든 외부 도메인의 요청을 허용한다.
 public class GpsController {
@@ -26,6 +26,7 @@ public class GpsController {
 	/** NOTE
 	 * 유저 현재 위치 정보 갱신 API
 	 */
+
 	@PostMapping("/update/{memberId}")
 	public ResponseEntity<GpsResponseDto> updateGps(@PathVariable Long memberId, @RequestBody GpsDto gpsDto) {
 		return ResponseEntity.ok(gpsService.updateMemberGps(memberId, gpsDto));

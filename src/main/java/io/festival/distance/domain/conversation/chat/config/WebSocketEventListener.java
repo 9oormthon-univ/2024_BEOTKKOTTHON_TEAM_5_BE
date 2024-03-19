@@ -1,6 +1,5 @@
 package io.festival.distance.domain.conversation.chat.config;
 
-import io.festival.distance.domain.conversation.chat.service.ChatMessageService;
 import io.festival.distance.domain.conversation.chatroomsession.entity.ChatRoomSession;
 import io.festival.distance.domain.conversation.chatroomsession.service.ChatRoomSessionService;
 import lombok.RequiredArgsConstructor;

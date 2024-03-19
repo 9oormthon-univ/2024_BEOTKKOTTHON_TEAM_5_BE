@@ -12,7 +12,8 @@ public enum HttpStatusCode {
     BAD_REQUEST(400),
     UNAUTHORIZED(401),
     CONTAIN_BADWORD(451),
-    NOT_FOUND_MESSAGE(406);
+    NOT_FOUND_MESSAGE(406),
+    LENGTH_REQUIRED(411);
 
     private final int status;
 }

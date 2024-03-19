@@ -21,7 +21,7 @@ services:
       - distance-networked
 
   app:
-    image: junseok1204/distance-0.0.20-snapshot
+    image: junseok1204/distance-0.0.25-snapshot
     container_name: app-container
     ports:
       - 8080:8080
@@ -36,6 +36,32 @@ services:
     networks:
       - distance-networked
     restart: always
+
+  nginx:
+    image: nginx:1.15-alpine
+    restart: unless-stopped
+    container_name: distance-nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/config:/etc/nginx/conf.d
+      - ./nginx/certbot/conf:/etc/letsencrypt
+      - ./nginx/certbot/www:/var/www/certbot
+    command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
+    networks:
+      - distance-networked
+
+  certbot:
+      image: certbot/certbot:latest
+      restart: unless-stopped
+      volumes:
+        - ./nginx/certbot/conf:/etc/letsencrypt
+        - ./nginx/certbot/www:/var/www/certbot
+      networks:
+        - distance-networked
+      entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+
 
 networks:
   distance-networked:

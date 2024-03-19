@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @CrossOrigin
+@RequestMapping("/api")
 public class AuthController {
     private final LoginAuthService authService;
 
