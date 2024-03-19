@@ -13,26 +13,28 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class FCMService {
 	public static notificationDto sendNotification(String clientToken) {
-
 		String title = "서버 측 제목입니다";
 		String message = "서버 측 메세지입니다";
-		System.out.println("토큰: " + clientToken);
+		System.out.println("Client 토큰: " + clientToken);
+
 		// 알림 내용
 		Message firebaseMessage = Message.builder()
 			.setToken(clientToken)
-			.setNotification( Notification.builder()
+			.setNotification(Notification.builder()
 				.setTitle(title)
 				.setBody(message)
 				.build())
 			.build();
-		// 알림 전송
-		String response = "알림 전송 실패";
+
+		// 알림 전송 및 결과 처리
+		String response;
 		try {
 			response = FirebaseMessaging.getInstance().send(firebaseMessage);
-			System.out.println("보낸 메세지 내용?: " + response);
 		} catch (FirebaseMessagingException e) {
 			e.printStackTrace();
+			response = "알림 전송 실패";
 		}
-		return notificationDto.builder().title(response).build();
+		return notificationDto.builder().FCMMessageID(response).build();
 	}
+
 }

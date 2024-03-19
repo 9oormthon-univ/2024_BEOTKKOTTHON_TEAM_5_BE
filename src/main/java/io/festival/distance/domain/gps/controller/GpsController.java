@@ -39,15 +39,4 @@ public class GpsController {
 	public ResponseEntity<MatchResponseDto> matching(@PathVariable Long memberId) {
 		return ResponseEntity.ok(gpsService.matchUser(memberId));
 	}
-	@GetMapping(value = "/hell/{clientToken}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<notificationDto> matching2(@PathVariable String clientToken) {
-		System.out.println("Controller 토큰 : " + clientToken);
-		notificationDto notification = FCMService.sendNotification(clientToken);
-		// notificationDto notification = null;
-		return ResponseEntity.ok(notification);
-	}
-	// @GetMapping("/send")
-	// public ResponseEntity<String> sendFCM() {
-	// 	// String CT = "duhU6AsXPjf2-pf2AYziot:APA91bHPPY6OlPxf1IOrY_xFYU80KdG8MvirX0Z1oHRYq7rVB5cfgbiBPbzBbG7DvCsFf_TgiVuO2qacv_4tS7eZjA_qz_JtGfsQYs_lVIq9sPi6Y0ODAVpU2rgsZ5oSvozfPB2L7IX4";
-	// }
 }
