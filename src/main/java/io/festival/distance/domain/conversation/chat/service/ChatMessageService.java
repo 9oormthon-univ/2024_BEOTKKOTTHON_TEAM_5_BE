@@ -49,22 +49,19 @@ public class ChatMessageService {
 
     @Transactional
     public List<ChatMessageResponseDto> markAllMessagesAsRead(ChatRoom chatRoom, Member member) {
-        RoomMember roomMember = roomMemberService.findRoomMember(member); //방금 들어온 멤버가
+        RoomMember roomMember = roomMemberService.findRoomMember(member,chatRoom); //방금 들어온 멤버가
         Long lastChatMessageId=roomMember.getLastReadMessageId(); //가장 나중에 읽은 메시지 PK값
         List<ChatMessage> messages = chatMessageRepository.findByChatRoomAndChatMessageIdGreaterThan(chatRoom, lastChatMessageId);
         messages.forEach(message ->{
             message.readCountUpdate(1);
             chatMessageRepository.save(message);
         });
-
         List<ChatMessageResponseDto> responseDtoList = messages.stream()
                 .map(ChatMessageResponseDto::new)
                 .collect(Collectors.toList());
-
         if(!responseDtoList.isEmpty()){ //최신 메시지가 있다면
             roomMember.updateMessageId(responseDtoList.get(responseDtoList.size()-1).getMessageId());
         }
-
         return responseDtoList;
     }
 }

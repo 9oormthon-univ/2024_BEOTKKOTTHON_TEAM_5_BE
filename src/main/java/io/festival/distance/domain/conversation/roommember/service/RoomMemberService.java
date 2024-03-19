@@ -25,7 +25,7 @@ public class RoomMemberService {
         roomMember.updateMessageId(chatMessageId);
     }
 
-    public RoomMember findRoomMember(Member member){
-        return roomMemberRepository.findByMember(member);
+    public RoomMember findRoomMember(Member member,ChatRoom chatRoom){
+        return roomMemberRepository.findByMemberAndChatRoom(member,chatRoom);
     }
 }

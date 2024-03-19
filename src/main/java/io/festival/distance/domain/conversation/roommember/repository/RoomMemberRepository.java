@@ -13,7 +13,7 @@ import java.util.Optional;
 public interface RoomMemberRepository extends JpaRepository<RoomMember, Long> {
     Optional<RoomMember> findByChatRoomAndMember(ChatRoom chatRoom, Member member);
     RoomMember findByChatRoom(ChatRoom chatRoom);
-    RoomMember findByMember(Member member);
+    //RoomMember findByMemberAndChatRoom(Member member,ChatRoom chatRoom);
     RoomMember findByMemberAndChatRoom(Member member, ChatRoom chatRoom);
     List<RoomMember> findAllByMember(Member member);
 }
