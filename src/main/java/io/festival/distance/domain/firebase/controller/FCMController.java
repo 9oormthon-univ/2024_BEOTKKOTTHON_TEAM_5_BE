@@ -1,5 +1,4 @@
 package io.festival.distance.domain.firebase.controller;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,7 +19,7 @@ public class FCMController {
 	/** NOTE
 	 * FCM 푸시 알림 전송 API
 	 */
-	@GetMapping(value = "/send/{clientToken}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/send/{clientToken}")
 	public ResponseEntity<notificationDto> sendFCM(@PathVariable String clientToken) {
 		notificationDto notification = FCMService.sendNotification(clientToken);
 		return ResponseEntity.ok(notification);
