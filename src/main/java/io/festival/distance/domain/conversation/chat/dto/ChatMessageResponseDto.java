@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 public class ChatMessageResponseDto {
     private String chatMessage;
     private Long senderId;
-    private String senderName;
+    private String senderName; //닉네임
     private int unreadCount;
     private Long messageId;
 

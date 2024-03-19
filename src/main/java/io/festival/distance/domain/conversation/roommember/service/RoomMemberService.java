@@ -1,11 +1,11 @@
 package io.festival.distance.domain.conversation.roommember.service;
 
+import io.festival.distance.domain.conversation.chatroom.entity.ChatRoom;
+import io.festival.distance.domain.conversation.chatroom.service.ChatRoomService;
 import io.festival.distance.domain.conversation.roommember.entity.RoomMember;
 import io.festival.distance.domain.conversation.roommember.repository.RoomMemberRepository;
 import io.festival.distance.domain.member.entity.Member;
 import io.festival.distance.domain.member.service.MemberService;
-import io.festival.distance.exception.DistanceException;
-import io.festival.distance.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,11 +15,13 @@ import org.springframework.transaction.annotation.Transactional;
 public class RoomMemberService {
     private final RoomMemberRepository roomMemberRepository;
     private final MemberService memberService;
+    private final ChatRoomService chatRoomService;
 
     @Transactional
-    public void updateLastMessage(Long memberId,Long chatMessageId){
+    public void updateLastMessage(Long memberId,Long chatMessageId,Long roomId){
         Member member = memberService.findMember(memberId);
-        RoomMember roomMember = roomMemberRepository.findByMember(member);
+        ChatRoom chatRoom = chatRoomService.findRoom(roomId);
+        RoomMember roomMember = roomMemberRepository.findByMemberAndChatRoom(member,chatRoom);
         roomMember.updateMessageId(chatMessageId);
     }
 
