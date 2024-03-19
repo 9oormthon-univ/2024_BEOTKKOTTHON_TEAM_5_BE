@@ -9,6 +9,7 @@ import io.festival.distance.domain.conversation.roommember.entity.RoomMember;
 import io.festival.distance.domain.conversation.roommember.service.RoomMemberService;
 import io.festival.distance.domain.member.entity.Member;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +18,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ChatMessageService {
     private final ChatMessageRepository chatMessageRepository;
     private final RoomMemberService roomMemberService;
@@ -49,8 +51,11 @@ public class ChatMessageService {
 
     @Transactional
     public List<ChatMessageResponseDto> markAllMessagesAsRead(ChatRoom chatRoom, Member member) {
+        log.info("1111111>>>");
         RoomMember roomMember = roomMemberService.findRoomMember(member,chatRoom); //방금 들어온 멤버가
+        log.info("22222222>>>");
         Long lastChatMessageId=roomMember.getLastReadMessageId(); //가장 나중에 읽은 메시지 PK값
+        log.info("33333333>>>");
         List<ChatMessage> messages = chatMessageRepository.findByChatRoomAndChatMessageIdGreaterThan(chatRoom, lastChatMessageId);
         messages.forEach(message ->{
             message.readCountUpdate(1);
