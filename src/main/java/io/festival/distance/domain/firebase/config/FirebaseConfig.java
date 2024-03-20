@@ -1,29 +1,29 @@
 package io.festival.distance.domain.firebase.config;
-
 import java.io.FileInputStream;
 import java.io.IOException;
-
 import javax.annotation.PostConstruct;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 
-import lombok.RequiredArgsConstructor;
-
+@Configuration
 public class FirebaseConfig {
 	/** NOTE
 	 * GoogleCredentials 객체를 생성 (Firebase에 접근시 서버 인증 정보)
  	 */
 	// Firebase Admin SDK private key 파일 경로
-	static final String FILEPATH = "src/main/java/io/festival/distance/domain/firebase/config/firebaseAdminSDKPrivateKey.json";
+	static final String FILEPATH = "./firebaseAdminSDKPrivateKey.json";
+
+	@Value("MY_JSON")
+	private String myJson;
+
 	@PostConstruct //spring 어플리케이션 실행될 때 아래 코드 바로 실행됨
 	public void firebaseInitialize() {
+		System.out.println("myJson: " + myJson);
 		try {
 			String fullPath = System.getProperty("user.dir") + "/" + FILEPATH;
 			System.out.println(fullPath);
