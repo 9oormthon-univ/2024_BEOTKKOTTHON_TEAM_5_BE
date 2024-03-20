@@ -15,4 +15,6 @@ public class LoginDto {
     private String loginId;
     @NotNull
     private String password;
+    @NotNull
+    private String clientToken;
 }
