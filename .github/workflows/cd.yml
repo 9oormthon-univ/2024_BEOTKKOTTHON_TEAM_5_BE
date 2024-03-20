@@ -1,0 +1,93 @@
+name: Dev build & deploy
+on:
+  workflow_dispatch:
+    inputs:
+      user_name:
+        description: 배포유저
+        required: true
+        type: string
+      stage_choice:
+        description: 서버 환경
+        type: choice
+        options:
+          - ''
+          - dev
+      release_message:
+        description: 릴리즈 메시지
+        type: string
+  workflow_call:
+    inputs:
+      user_name:
+        description: :배포유저
+        type: string
+        required: true
+      stage_choice:
+        description: :서버 환경
+        type: string
+        required: true
+      branch:
+        description: 브랜치
+        type: string
+      release_message:
+        description: 릴리즈 메시지
+        type: string
+
+run-name: 'build on stage: ${{ inputs.stage_choice }} & branch: ${{ inputs.branch || github.ref_name }}'
+
+jobs:
+  env:
+    name: setup environment variables
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get variables
+        id: var
+        run:
+          echo "get env"
+    outputs:
+      branch: ${{ inputs.branch || github.ref_name }}
+
+
+  build:
+    needs: env
+    runs-on: ubuntu-latest
+
+    outputs:
+      id: build_output
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up JDK 17
+      uses: actions/setup-java@v3
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+    - uses: actions/checkout@v2
+
+    - name: docker build
+      run: |
+        git pull origin ${{ needs.env.outputs.branch }}
+        git checkout ${{ needs.env.outputs.branch }}
+        chmod +x gradlew
+        ./gradlew clean build --parallel
+        docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_TOKEN }}
+        echo "git will pull origin : [${{ needs.env.outputs.branch }}]"
+        echo "git checkout finish"
+        docker build -t ${{ secrets.DOCKER_USERNAME }}/distance-0.0.1-snapshot .
+        echo "docker build finish"        
+        docker push ${{ secrets.DOCKER_USERNAME }}/distance-0.0.1-snapshot
+
+    - name: Deploy
+      uses: appleboy/ssh-action@v0.1.8
+      with:
+          host: ${{ secrets.AWS_HOST }}
+          username: ${{ secrets.AWS_USERNAME }}
+          key: ${{ secrets.AWS_PASSWORD }}
+          port: ${{ secrets.AWS_PORT }}
+          script: |
+            docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_TOKEN }}
+            docker stop ${{ secrets.DOCKER_APP_CONTAINER }}
+            docker rm ${{ secrets.DOCKER_APP_CONTAINER }}
+            docker rmi ${{ secrets.DOCKER_USERNAME }}/distance-0.0.1-snapshot
+            docker pull ${{ secrets.DOCKER_USERNAME }}/distance-0.0.1-snapshot
+            cd 2024_BEOTKKOTTHON_TEAM_5_BE
+            git pull origin ${{ needs.env.outputs.branch }}
+            docker-compose up -d

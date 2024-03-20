@@ -1,11 +1,12 @@
 package io.festival.distance.domain.conversation.roommember.entity;
 
+import io.festival.distance.domain.base.RoomName;
 import io.festival.distance.domain.conversation.chatroom.entity.ChatRoom;
 import io.festival.distance.domain.member.entity.Member;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 
@@ -14,8 +15,8 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-@Builder
-public class RoomMember { //채팅방 참여자
+@SuperBuilder
+public class RoomMember extends RoomName { //채팅방 참여자
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "room_member_id")

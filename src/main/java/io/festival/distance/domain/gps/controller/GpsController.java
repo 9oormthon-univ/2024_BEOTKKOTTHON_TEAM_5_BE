@@ -18,6 +18,9 @@ import io.festival.distance.domain.gps.service.GpsService;
 import lombok.RequiredArgsConstructor;
 import io.festival.distance.domain.firebase.dto.notificationDto;
 
+import java.lang.reflect.ParameterizedType;
+import java.security.Principal;
+
 @RestController
 @RequestMapping("/api/gps")
 @RequiredArgsConstructor //gpsService 생성자 자동 생성

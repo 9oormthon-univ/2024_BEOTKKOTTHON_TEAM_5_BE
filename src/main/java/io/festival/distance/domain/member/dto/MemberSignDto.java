@@ -16,7 +16,6 @@ public record MemberSignDto(
         String password,
         String checkPassword,
         String gender,
-        String nickName,
         String telNum,
         String school,
         String college,

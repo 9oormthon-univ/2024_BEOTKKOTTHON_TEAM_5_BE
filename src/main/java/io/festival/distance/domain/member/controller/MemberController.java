@@ -73,4 +73,20 @@ public class MemberController {
     public ResponseEntity<Long> updateProfile(Principal principal,@RequestBody MemberInfoDto memberInfoDto){
         return ResponseEntity.ok(memberService.modifyProfile(principal.getName(),memberInfoDto));
     }
+
+    /** NOTE
+     * 멤버 ID값 반환
+     */
+    @GetMapping("/id")
+    public ResponseEntity<Long> sendMemberId(Principal principal){
+        return ResponseEntity.ok(memberService.findByLoginId(principal.getName()).getMemberId());
+    }
+
+    /** NOTE
+     * 멤버의 프로필이 등록되어 있으면 true, 등록되어 있지 않으면 false반환
+     */
+    @GetMapping("/check/profile")
+    public ResponseEntity<Boolean> checkProfile(Principal principal){
+        return ResponseEntity.ok(memberService.isExistProfile(principal));
+    }
 }

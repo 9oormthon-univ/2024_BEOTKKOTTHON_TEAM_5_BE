@@ -4,6 +4,7 @@ import io.festival.distance.domain.member.dto.*;
 import io.festival.distance.domain.member.entity.Authority;
 import io.festival.distance.domain.member.entity.Member;
 import io.festival.distance.domain.member.repository.MemberRepository;
+import io.festival.distance.domain.member.validlogin.ValidLogin;
 import io.festival.distance.domain.member.validsignup.ValidLoginId;
 import io.festival.distance.domain.member.validsignup.ValidSignup;
 import io.festival.distance.domain.memberhobby.service.MemberHobbyService;
@@ -15,6 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.security.Principal;
 import java.util.List;
 
 @Service
@@ -25,6 +27,7 @@ public class MemberService {
     private final ValidSignup validSignup;
     private final ValidLoginId validLoginId;
     private final MemberTagService memberTagService;
+    private final ValidLogin validLogin;
     private final MemberHobbyService memberHobbyService;
     private static final String PREFIX="#";
     /** NOTE
@@ -44,7 +47,7 @@ public class MemberService {
                 .loginId(signDto.loginId())
                 .password(encoder.encode(signDto.password()))
                 .gender(signDto.gender())
-                .nickName(signDto.nickName())
+                .nickName(signDto.department())
                 .telNum(signDto.telNum())
                 .school(signDto.school())
                 .college(signDto.college())
@@ -53,8 +56,6 @@ public class MemberService {
                 .activated(true)
                 .build();
        memberRepository.save(member);
-       String nickName= signDto.nickName()+PREFIX+member.getMemberId();
-       member.memberNicknameUpdate(nickName);
        return member.getMemberId();
     }
 
@@ -77,6 +78,8 @@ public class MemberService {
         Member member = memberRepository.findByLoginId(loginId)
                 .orElseThrow(() -> new DistanceException(ErrorCode.NOT_EXIST_MEMBER));
         member.memberInfoUpdate(memberInfoDto);
+        String nickName= member.getNickName()+memberInfoDto.mbti()+PREFIX+member.getMemberId();
+        member.memberNicknameUpdate(nickName);
         List<MemberTagDto> tagList = memberInfoDto.memberTagDto()
                 .stream()
                 .toList();
@@ -95,7 +98,7 @@ public class MemberService {
 
     public Member findByLoginId(String loginId){
         return memberRepository.findByLoginId(loginId)
-                .orElseThrow(()-> new DistanceException(ErrorCode.NOT_EXIST_MEMBER1));
+                .orElseThrow(()-> new DistanceException(ErrorCode.NOT_EXIST_MEMBER));
     }
 
     @Transactional(readOnly = true)
@@ -138,5 +141,10 @@ public class MemberService {
         memberTagService.modifyTag(member,memberInfoDto.memberTagDto());
         memberHobbyService.modifyHobby(member,memberInfoDto.memberHobbyDto());
         return member.getMemberId();
+    }
+
+    public Boolean isExistProfile(Principal principal) {
+        Member member = findByLoginId(principal.getName());
+        return !validLogin.checkLogin(member);
     }
 }
