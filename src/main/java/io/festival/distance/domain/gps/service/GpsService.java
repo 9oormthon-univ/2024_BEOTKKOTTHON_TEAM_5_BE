@@ -2,6 +2,7 @@ package io.festival.distance.domain.gps.service;
 
 import java.util.List;
 
+import io.festival.distance.domain.member.service.MemberService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,14 +20,14 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class GpsService {
 	private final MemberRepository memberRepository;
+	private final MemberService memberService;
 
 	/** NOTE
 	 * member 테이블의 longitude, latitude 갱신
 	 */
 	@Transactional
-	public GpsResponseDto updateMemberGps(Long memberId, GpsDto gpsDto) {
-		Member member = memberRepository.findById(memberId)
-				.orElseThrow(() -> new DistanceException(ErrorCode.NOT_EXIST_MEMBER));
+	public GpsResponseDto updateMemberGps(String loginId, GpsDto gpsDto) {
+		Member member = memberService.findByLoginId(loginId);
 		member.memberGpsUpdate(gpsDto);
 		return GpsResponseDto.builder()
 				.memberId(member.getMemberId())
@@ -38,11 +39,10 @@ public class GpsService {
 	 * member 테이블에서 특정 유저의 latitude, longitude 가져오기
 	 */
 	@Transactional
-	public MatchResponseDto matchUser(Long memberId) {
+	public MatchResponseDto matchUser(String loginId) {
 		final double searchRange = 2000000000; // 200m 이내 반경
 
-		Member centerUser = memberRepository.findById(memberId)
-			.orElseThrow(() -> new DistanceException(ErrorCode.NOT_EXIST_MEMBER));
+		Member centerUser =memberService.findByLoginId(loginId);
 		double centerLongitude = centerUser.getLongitude();
 		double centerLatitude = centerUser.getLatitude();
 
@@ -59,10 +59,9 @@ public class GpsService {
 			.limit(4) // 최대 4명
 			.map(user -> MatchUserDto.builder() // 필요한 정보만 넘기기 위함
 				.memberId(user.getMemberId())
-				.mbti(user.getMbti())
+				.memberInfoDto(memberService.memberProfile(user.getMemberId()))
 				.nickName(user.getNickName())
 				.department(user.getDepartment())
-				.memberCharacter(user.getMemberCharacter())
 				.build())
 			.toList();
 		return MatchResponseDto.builder()
