@@ -19,6 +19,7 @@ public class ChatRoomInfoDto {
     private String roomName;
     private Long opponentMemberId;
     private String memberCharacter;
+    private String lastMessage;
     public ChatRoomInfoDto(ChatRoom chatRoom) {
         this.chatRoomId = chatRoom.getChatRoomId();
         this.createDt = chatRoom.getCreateDt();

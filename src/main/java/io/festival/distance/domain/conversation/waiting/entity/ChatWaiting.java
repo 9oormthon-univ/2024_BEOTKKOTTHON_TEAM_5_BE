@@ -1,4 +1,4 @@
-package io.festival.distance.domain.waiting.entity;
+package io.festival.distance.domain.conversation.waiting.entity;
 
 import io.festival.distance.domain.base.RoomName;
 import io.festival.distance.domain.member.entity.Member;

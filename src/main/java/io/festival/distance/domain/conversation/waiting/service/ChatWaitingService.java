@@ -1,10 +1,10 @@
-package io.festival.distance.domain.waiting.service;
+package io.festival.distance.domain.conversation.waiting.service;
 
 import io.festival.distance.domain.member.entity.Member;
 import io.festival.distance.domain.member.service.MemberService;
-import io.festival.distance.domain.waiting.dto.ChatWaitingDto;
-import io.festival.distance.domain.waiting.entity.ChatWaiting;
-import io.festival.distance.domain.waiting.repository.ChatWaitingRepository;
+import io.festival.distance.domain.conversation.waiting.dto.ChatWaitingDto;
+import io.festival.distance.domain.conversation.waiting.entity.ChatWaiting;
+import io.festival.distance.domain.conversation.waiting.repository.ChatWaitingRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

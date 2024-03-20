@@ -6,8 +6,8 @@ import io.festival.distance.domain.conversation.chatroom.repository.ChatRoomRepo
 import io.festival.distance.domain.conversation.chatroom.validroomcount.ValidRoomCount;
 import io.festival.distance.domain.member.entity.Member;
 import io.festival.distance.domain.member.repository.MemberRepository;
-import io.festival.distance.domain.waiting.entity.ChatWaiting;
-import io.festival.distance.domain.waiting.repository.ChatWaitingRepository;
+import io.festival.distance.domain.conversation.waiting.entity.ChatWaiting;
+import io.festival.distance.domain.conversation.waiting.repository.ChatWaitingRepository;
 import io.festival.distance.exception.ChatRoomException;
 import io.festival.distance.exception.DistanceException;
 import io.festival.distance.exception.ErrorCode;

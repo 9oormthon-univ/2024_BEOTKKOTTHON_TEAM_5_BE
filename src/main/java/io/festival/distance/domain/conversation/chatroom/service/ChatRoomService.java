@@ -1,6 +1,7 @@
 package io.festival.distance.domain.conversation.chatroom.service;
 
 import io.festival.distance.domain.conversation.chat.dto.ChatMessageResponseDto;
+import io.festival.distance.domain.conversation.chat.entity.ChatMessage;
 import io.festival.distance.domain.conversation.chat.repository.ChatMessageRepository;
 import io.festival.distance.domain.conversation.chatroom.dto.ChatRoomInfoDto;
 import io.festival.distance.domain.conversation.chatroom.entity.ChatRoom;
@@ -35,6 +36,7 @@ public class ChatRoomService {
                 .map(roomMember -> {
                     ChatRoom chatRoom = roomMember.getChatRoom();
                     Member opponent=memberRepository.findByNickName(roomMember.getMyRoomName());
+                    ChatMessage message = chatMessageRepository.findTop1ByChatRoomOrderByCreateDt(chatRoom);
                     return ChatRoomInfoDto.builder()
                             .chatRoomId(chatRoom.getChatRoomId())
                             .roomName(roomMember.getMyRoomName())
@@ -42,6 +44,7 @@ public class ChatRoomService {
                             .modifyDt(roomMember.getModifyDt())
                             .opponentMemberId(opponent.getMemberId())
                             .memberCharacter(opponent.getMemberCharacter())
+                            .lastMessage(message.getChatMessage())
                             .build();
                 })
                 .collect(Collectors.toList());

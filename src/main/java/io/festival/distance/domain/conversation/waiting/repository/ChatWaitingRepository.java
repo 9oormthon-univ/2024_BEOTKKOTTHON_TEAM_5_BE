@@ -1,7 +1,7 @@
-package io.festival.distance.domain.waiting.repository;
+package io.festival.distance.domain.conversation.waiting.repository;
 
 import io.festival.distance.domain.member.entity.Member;
-import io.festival.distance.domain.waiting.entity.ChatWaiting;
+import io.festival.distance.domain.conversation.waiting.entity.ChatWaiting;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
