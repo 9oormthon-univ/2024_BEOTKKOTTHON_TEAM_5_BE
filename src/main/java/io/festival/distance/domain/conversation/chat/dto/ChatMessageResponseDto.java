@@ -19,8 +19,6 @@ public class ChatMessageResponseDto {
     private String senderName; //닉네임
     private int unreadCount;
     private Long messageId;
-
-    @DateTimeFormat(pattern = "HH:mm:ss")
     private LocalDateTime sendDt;
 
     public ChatMessageResponseDto(ChatMessage message) {
