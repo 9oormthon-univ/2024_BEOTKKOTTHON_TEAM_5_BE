@@ -10,6 +10,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Getter
 public class ChatRoomDto {
-    private String roomName;
-    private Long memberId;
+    private Long memberId; //상대방 ID
 }

@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import javax.validation.Valid;
@@ -19,7 +20,7 @@ import java.util.Base64;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-@Builder
+@SuperBuilder
 public class Member extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -81,6 +82,7 @@ public class Member extends BaseTimeEntity {
         this.latitude = gpsDto.latitude();
         this.longitude = gpsDto.longitude();
     }
+
     public void memberNicknameUpdate(String nickName){
         this.nickName=nickName;
     }

@@ -1,6 +1,9 @@
 package io.festival.distance.domain.base;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -13,6 +16,9 @@ import java.time.LocalDateTime;
 
 @Getter
 @MappedSuperclass
+@AllArgsConstructor
+@NoArgsConstructor
+@SuperBuilder
 @EntityListeners(AuditingEntityListener.class)
 public class BaseTimeEntity {
     @CreationTimestamp

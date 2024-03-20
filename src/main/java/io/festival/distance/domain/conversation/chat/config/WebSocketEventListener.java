@@ -3,6 +3,7 @@ package io.festival.distance.domain.conversation.chat.config;
 import io.festival.distance.domain.conversation.chatroomsession.entity.ChatRoomSession;
 import io.festival.distance.domain.conversation.chatroomsession.service.ChatRoomSessionService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.context.event.EventListener;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.messaging.support.GenericMessage;
@@ -17,7 +18,7 @@ import java.util.Objects;
 @Component
 @RequiredArgsConstructor
 public class WebSocketEventListener {
-    private final ChatRoomSessionService chatRoomSessionService;
+     final ChatRoomSessionService chatRoomSessionService;
 
     @EventListener
     public void handleWebSocketConnectListener(SessionConnectedEvent event) {

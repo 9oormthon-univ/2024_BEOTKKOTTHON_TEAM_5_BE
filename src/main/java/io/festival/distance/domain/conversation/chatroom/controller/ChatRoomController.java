@@ -4,6 +4,7 @@ import io.festival.distance.domain.conversation.chat.dto.ChatMessageResponseDto;
 import io.festival.distance.domain.conversation.chat.service.ChatMessageService;
 import io.festival.distance.domain.conversation.chatroom.dto.ChatRoomDto;
 import io.festival.distance.domain.conversation.chatroom.dto.ChatRoomInfoDto;
+import io.festival.distance.domain.conversation.chatroom.service.ChatFacadeService;
 import io.festival.distance.domain.conversation.chatroom.service.ChatRoomService;
 import io.festival.distance.domain.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -21,10 +22,10 @@ public class ChatRoomController {
     private final ChatRoomService chatRoomService;
     private final MemberService memberService;
     private final ChatMessageService chatMessageService;
-
+    private final ChatFacadeService chatFacadeService;
     @PostMapping("/create")
     public ResponseEntity<Long> createRoom(@RequestBody ChatRoomDto chatRoomDto, Principal principal){
-        return ResponseEntity.ok(chatRoomService.generateRoom(chatRoomDto,principal));
+        return ResponseEntity.ok(chatFacadeService.generateRoom(chatRoomDto,principal,true));
     }
 
     @GetMapping

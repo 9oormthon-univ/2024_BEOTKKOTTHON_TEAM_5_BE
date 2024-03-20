@@ -10,4 +10,9 @@ public class GlobalExceptionHandler {
     protected ResponseEntity<ErrorResponseEntity> errorCodeResponseEntity(DistanceException ex){
         return ErrorResponseEntity.responseEntity(ex.getErrorCode());
     }
+
+    @ExceptionHandler(ChatRoomException.class)
+    protected ResponseEntity<ErrorResponseEntity> errorCodeResponseEntity1(ChatRoomException ex){
+        return ErrorResponseEntity.responseEntity(ex.getErrorCode());
+    }
 }

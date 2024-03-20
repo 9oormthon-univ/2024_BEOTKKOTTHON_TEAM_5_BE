@@ -1,8 +1,8 @@
 package io.festival.distance.domain.conversation.chatroom.service;
 
 import io.festival.distance.domain.conversation.chat.dto.ChatMessageResponseDto;
+import io.festival.distance.domain.conversation.chat.entity.ChatMessage;
 import io.festival.distance.domain.conversation.chat.repository.ChatMessageRepository;
-import io.festival.distance.domain.conversation.chatroom.dto.ChatRoomDto;
 import io.festival.distance.domain.conversation.chatroom.dto.ChatRoomInfoDto;
 import io.festival.distance.domain.conversation.chatroom.entity.ChatRoom;
 import io.festival.distance.domain.conversation.chatroom.repository.ChatRoomRepository;
@@ -14,9 +14,8 @@ import io.festival.distance.exception.DistanceException;
 import io.festival.distance.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.security.Principal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,62 +26,52 @@ public class ChatRoomService {
     private final MemberRepository memberRepository;
     private final RoomMemberRepository roomMemberRepository;
     private final ChatMessageRepository chatMessageRepository;
-
-    public Long generateRoom(ChatRoomDto chatRoomDto, Principal principal) {
-        Member member1 = memberRepository.findById(chatRoomDto.getMemberId())
-                .orElseThrow(() -> new DistanceException(ErrorCode.EXIST_NICKNAME));
-
-        Member member2 = memberRepository.findByLoginId(principal.getName())
-                .orElseThrow(()-> new DistanceException(ErrorCode.NOT_EXIST_MEMBER));
-
-        ChatRoom chatRoom = ChatRoom.builder()
-                .roomName(chatRoomDto.getRoomName())
-                .build();
-
-        Long chatRoomId = chatRoomRepository.save(chatRoom).getChatRoomId();
-        addRoomMember(chatRoomId, List.of(member1, member2));
-        return chatRoomId;
-    }
-
+    @Transactional(readOnly = true)
     public List<ChatRoomInfoDto> findAllRoom(String loginId) {
-        Member member = memberRepository.findByLoginId(loginId)
+        Member member = memberRepository.findByLoginId(loginId) //현재 로그인한 객체
                 .orElseThrow(() -> new DistanceException(ErrorCode.NOT_EXIST_MEMBER));
 
-        List<Long> list = roomMemberRepository.findAllByMember(member)
+        return roomMemberRepository.findAllByMember(member)
                 .stream()
-                .map(roomId -> roomId.getChatRoom().getChatRoomId())
-                .toList();
-
-        List<ChatRoomInfoDto> dtoList = new ArrayList<>(); // 현재 객체가 속한 방 ID값
-
-        for (Long roomId : list) {
-            chatRoomRepository.findById(roomId).ifPresent(chatRoom -> {
-                ChatRoomInfoDto dto = ChatRoomInfoDto.builder()
-                        .chatRoomId(chatRoom.getChatRoomId())
-                        .roomName(chatRoom.getRoomName())
-                        .createDt(chatRoom.getCreateDt())
-                        .modifyDt(chatRoom.getModifyDt())
-                        .build();
-                dtoList.add(dto);
-            });
-        }
-        return dtoList;
+                .map(roomMember -> {
+                    ChatRoom chatRoom = roomMember.getChatRoom();
+                    Member opponent=memberRepository.findByNickName(roomMember.getMyRoomName());
+                    ChatMessage message = chatMessageRepository.findTop1ByChatRoomOrderByCreateDt(chatRoom);
+                    return ChatRoomInfoDto.builder()
+                            .chatRoomId(chatRoom.getChatRoomId())
+                            .roomName(roomMember.getMyRoomName())
+                            .createDt(roomMember.getCreateDt())
+                            .modifyDt(roomMember.getModifyDt())
+                            .opponentMemberId(opponent.getMemberId())
+                            .memberCharacter(opponent.getMemberCharacter())
+                            .lastMessage(message.getChatMessage())
+                            .build();
+                })
+                .collect(Collectors.toList());
     }
 
+    @Transactional
     public void addRoomMember(Long chatRoomId, List<Member> member) {
         ChatRoom chatRoom = chatRoomRepository.findById(chatRoomId)
                 .orElseThrow(() -> new IllegalStateException("존재하지 않는 방"));
 
         for (Member m : member) {
+            Member opponent = member //상대방 찾음
+                    .stream()
+                    .filter(o -> !o.getMemberId().equals(m.getMemberId()))
+                    .findFirst()
+                    .orElseThrow(() -> new DistanceException(ErrorCode.NOT_EXIST_MEMBER));
+
             RoomMember roomMember = RoomMember.builder()
                     .chatRoom(chatRoom)
+                    .myRoomName(opponent.getNickName())
                     .lastReadMessageId(0L)
                     .member(m)
                     .build();
             roomMemberRepository.save(roomMember);
         }
     }
-
+    @Transactional
     public Long delete(Long roomId) {
         chatRoomRepository.deleteById(roomId);
         return roomId;
