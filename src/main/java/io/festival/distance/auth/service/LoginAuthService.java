@@ -3,6 +3,7 @@ package io.festival.distance.auth.service;
 import io.festival.distance.auth.dto.LoginDto;
 import io.festival.distance.auth.dto.TokenDto;
 import io.festival.distance.auth.jwt.TokenProvider;
+import io.festival.distance.domain.member.entity.Member;
 import io.festival.distance.domain.member.repository.MemberRepository;
 import io.festival.distance.exception.DistanceException;
 import io.festival.distance.exception.ErrorCode;
@@ -24,6 +25,9 @@ public class LoginAuthService {
     private final MemberRepository memberRepository;
 
     public TokenDto login(LoginDto loginDto) {
+        Member member = memberRepository.findByLoginId(loginDto.getLoginId())
+                .orElseThrow(() -> new DistanceException(ErrorCode.NOT_EXIST_ADMIN));
+
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(loginDto.getLoginId(), loginDto.getPassword());
         // authenticate 메소드가 실행이 될 때 CustomUserDetailsService class의 loadUserByUsername 메소드가 실행
@@ -32,6 +36,9 @@ public class LoginAuthService {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         // authentication 객체를 createToken 메소드를 통해서 JWT Token을 생성
         String jwt = tokenProvider.createToken(authentication);
+
+        member.clientTokenUpdate(loginDto.getClientToken()); // clientToken 갱신
+
         return new TokenDto(jwt);
     }
 }
