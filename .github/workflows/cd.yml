@@ -80,7 +80,7 @@ jobs:
       with:
           host: ${{ secrets.AWS_HOST }}
           username: ${{ secrets.AWS_USERNAME }}
-          password: ${{ secrets.AWS_PASSWORD }}
+          key: ${{ secrets.AWS_PASSWORD }}
           port: ${{ secrets.AWS_PORT }}
           script: |
             docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_TOKEN }}
