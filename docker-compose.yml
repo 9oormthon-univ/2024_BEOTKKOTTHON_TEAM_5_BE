@@ -21,7 +21,7 @@ services:
       - distance-networked
 
   app:
-    image: junseok1204/distance-0.0.27-snapshot
+    image: junseok1204/distance-0.0.28-snapshot
     container_name: app-container
     ports:
       - 8080:8080
