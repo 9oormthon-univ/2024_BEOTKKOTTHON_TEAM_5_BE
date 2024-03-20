@@ -39,7 +39,7 @@ public class GpsService {
 	 */
 	@Transactional
 	public MatchResponseDto matchUser(Long memberId) {
-		final double searchRange = 200; // 200m 이내 반경
+		final double searchRange = 2000000000; // 200m 이내 반경
 
 		Member centerUser = memberRepository.findById(memberId)
 			.orElseThrow(() -> new DistanceException(ErrorCode.NOT_EXIST_MEMBER));
