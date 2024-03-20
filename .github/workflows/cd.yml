@@ -83,11 +83,11 @@ jobs:
           username: ${{ secrets.AWS_USERNAME }}
           port: ${{ secrets.AWS_PORT }}
           script: |
-            docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_TOKEN }}
-            docker stop ${{ secrets.DOCKER_APP_CONTAINER }}
-            docker rm ${{ secrets.DOCKER_APP_CONTAINER }}
-            docker rmi ${{ secrets.DOCKER_USERNAME }}/distance-0.0.1-snapshot
-            docker pull ${{ secrets.DOCKER_USERNAME }}/distance-0.0.1-snapshot
-            cd 2024_BEOTKKOTTHON_TEAM_5_BE
-            git pull origin ${{ needs.env.outputs.branch }}
-            docker-compose up -d
+            sudo docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_TOKEN }}
+            sudo docker stop ${{ secrets.DOCKER_APP_CONTAINER }}
+            sudo docker rm ${{ secrets.DOCKER_APP_CONTAINER }}
+            sudo docker rmi ${{ secrets.DOCKER_USERNAME }}/distance-0.0.1-snapshot
+            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/distance-0.0.1-snapshot
+            sudo cd 2024_BEOTKKOTTHON_TEAM_5_BE
+            sudo git pull origin ${{ needs.env.outputs.branch }}
+            sudo docker-compose up -d
