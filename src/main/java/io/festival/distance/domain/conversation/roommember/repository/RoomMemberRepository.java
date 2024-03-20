@@ -20,5 +20,5 @@ public interface RoomMemberRepository extends JpaRepository<RoomMember, Long> {
 
     Long countByMember(Member member);
 
-    //RoomMember findByChatRoomAndMember(Long roomId, Member member);
+    void deleteByChatRoomAndMember(ChatRoom chatRoom,Member member);
 }

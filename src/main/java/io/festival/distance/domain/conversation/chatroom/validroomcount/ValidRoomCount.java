@@ -1,13 +1,12 @@
 package io.festival.distance.domain.conversation.chatroom.validroomcount;
 
 import io.festival.distance.domain.member.entity.Member;
-import io.festival.distance.domain.waiting.service.ChatWaitingService;
+import io.festival.distance.domain.conversation.waiting.service.ChatWaitingService;
 import io.festival.distance.exception.ChatRoomException;
 import io.festival.distance.exception.DistanceException;
 import io.festival.distance.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @RequiredArgsConstructor
