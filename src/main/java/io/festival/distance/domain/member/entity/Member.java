@@ -70,6 +70,9 @@ public class Member extends BaseTimeEntity {
     @Column(name = "longitude")
     private double longitude;
 
+    @Column(name = "client_token")
+    private String clientToken;
+
     @Enumerated(EnumType.STRING)
     private Authority authority;
 
@@ -90,5 +93,8 @@ public class Member extends BaseTimeEntity {
         this.password=encrypted_password;
         this.gender=accountRequestDto.gender();
         this.telNum=accountRequestDto.telNum();
+    }
+    public void clientTokenUpdate(String clientToken){
+        this.clientToken=clientToken;
     }
 }
