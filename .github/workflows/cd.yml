@@ -88,6 +88,6 @@ jobs:
             sudo docker rm ${{ secrets.DOCKER_APP_CONTAINER }}
             sudo docker rmi ${{ secrets.DOCKER_USERNAME }}/distance-0.0.1-snapshot
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/distance-0.0.1-snapshot
-            sudo cd 2024_BEOTKKOTTHON_TEAM_5_BE
+            cd 2024_BEOTKKOTTHON_TEAM_5_BE
             sudo git pull origin ${{ needs.env.outputs.branch }}
             sudo docker-compose up -d
