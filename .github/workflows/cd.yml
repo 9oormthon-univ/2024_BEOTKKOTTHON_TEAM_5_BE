@@ -78,9 +78,9 @@ jobs:
     - name: Deploy
       uses: appleboy/ssh-action@v0.1.8
       with:
+          key: ${{ secrets.AWS_SSH_PRIVATE_KEY }}
           host: ${{ secrets.AWS_HOST }}
           username: ${{ secrets.AWS_USERNAME }}
-          key: ${{ secrets.AWS_PASSWORD }}
           port: ${{ secrets.AWS_PORT }}
           script: |
             docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_TOKEN }}
