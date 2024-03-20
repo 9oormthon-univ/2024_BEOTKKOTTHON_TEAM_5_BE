@@ -68,26 +68,26 @@ jobs:
         git checkout ${{ needs.env.outputs.branch }}
         chmod +x gradlew
         ./gradlew clean build --parallel
-        docker login -u ${{ secrets.USERNAME }} -p ${{ secrets.PASSWORD }}
+        docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_TOKEN }}
         echo "git will pull origin : [${{ needs.env.outputs.branch }}]"
         echo "git checkout finish"
-        docker build -t ${{ secrets.USERNAME }}/distance-0.0.1-snapshot .
+        docker build -t ${{ secrets.DOCKER_USERNAME }}/distance-0.0.1-snapshot .
         echo "docker build finish"        
-        docker push ${{ secrets.USERNAME }}/distance-0.0.1-snapshot
+        docker push ${{ secrets.DOCKER_USERNAME }}/distance-0.0.1-snapshot
 
     - name: Deploy
       uses: appleboy/ssh-action@v0.1.8
       with:
-          host: ${{ secrets.NCP_HOST }}
-          username: ${{ secrets.NCP_USERNAME }}
-          password: ${{ secrets.NCP_PASSWORD }}
-          port: ${{ secrets.NCP_PORT }}
+          host: ${{ secrets.AWS_HOST }}
+          username: ${{ secrets.AWS_USERNAME }}
+          password: ${{ secrets.AWS_PASSWORD }}
+          port: ${{ secrets.AWS_PORT }}
           script: |
-            docker login -u ${{ secrets.USERNAME }} -p ${{ secrets.PASSWORD }}
+            docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_TOKEN }}
             docker stop ${{ secrets.DOCKER_APP_CONTAINER }}
             docker rm ${{ secrets.DOCKER_APP_CONTAINER }}
-            docker rmi ${{ secrets.USERNAME }}/distance-0.0.1-snapshot
-            docker pull ${{ secrets.USERNAME }}/distance-0.0.1-snapshot
-            cd GAZA-server
+            docker rmi ${{ secrets.DOCKER_USERNAME }}/distance-0.0.1-snapshot
+            docker pull ${{ secrets.DOCKER_USERNAME }}/distance-0.0.1-snapshot
+            cd 2024_BEOTKKOTTHON_TEAM_5_BE
             git pull origin ${{ needs.env.outputs.branch }}
             docker-compose up -d
