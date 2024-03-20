@@ -24,9 +24,6 @@ public class LoginAuthService {
     private final MemberRepository memberRepository;
 
     public TokenDto login(LoginDto loginDto) {
-        if (!memberRepository.existsByLoginId(loginDto.getLoginId())) {
-            throw new DistanceException(ErrorCode.NOT_EXIST_ADMIN);
-        }
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(loginDto.getLoginId(), loginDto.getPassword());
         // authenticate 메소드가 실행이 될 때 CustomUserDetailsService class의 loadUserByUsername 메소드가 실행

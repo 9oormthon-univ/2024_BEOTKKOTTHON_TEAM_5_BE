@@ -26,8 +26,6 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(final String loginId) {
         Member member = memberRepository.findOneWithAuthoritiesByLoginId(loginId)
                 .orElseThrow(() -> new DistanceException(ErrorCode.NOT_EXIST_MEMBER));
-        if(validLogin.checkLogin(member))
-            throw new DistanceException(ErrorCode.NOT_NULL_MEMBER_INFO);
         return createAdmin(loginId,member);
     }
 
