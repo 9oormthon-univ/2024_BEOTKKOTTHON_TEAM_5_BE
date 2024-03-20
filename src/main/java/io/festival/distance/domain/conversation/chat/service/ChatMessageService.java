@@ -5,6 +5,7 @@ import io.festival.distance.domain.conversation.chat.dto.ChatMessageResponseDto;
 import io.festival.distance.domain.conversation.chat.entity.ChatMessage;
 import io.festival.distance.domain.conversation.chat.repository.ChatMessageRepository;
 import io.festival.distance.domain.conversation.chatroom.entity.ChatRoom;
+import io.festival.distance.domain.conversation.chatroomsession.repository.ChatRoomSessionRepository;
 import io.festival.distance.domain.conversation.roommember.entity.RoomMember;
 import io.festival.distance.domain.conversation.roommember.service.RoomMemberService;
 import io.festival.distance.domain.member.entity.Member;
@@ -31,7 +32,6 @@ public class ChatMessageService {
                 .unreadCount(2)
                 .chatRoom(chatRoom)
                 .build();
-
         return chatMessageRepository.save(message).getChatMessageId();
     }
 

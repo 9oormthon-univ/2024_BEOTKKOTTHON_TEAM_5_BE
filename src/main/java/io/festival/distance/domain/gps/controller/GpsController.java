@@ -31,15 +31,15 @@ public class GpsController {
 	/** NOTE
 	 * 유저 현재 위치 정보 갱신 API
 	 */
-	@PostMapping("/update/{memberId}")
-	public ResponseEntity<GpsResponseDto> updateGps(@PathVariable Long memberId, @RequestBody GpsDto gpsDto) {
-		return ResponseEntity.ok(gpsService.updateMemberGps(memberId, gpsDto));
+	@PostMapping("/update")
+	public ResponseEntity<GpsResponseDto> updateGps(Principal principal, @RequestBody GpsDto gpsDto) {
+		return ResponseEntity.ok(gpsService.updateMemberGps(principal.getName(), gpsDto));
 	}
 	/** NOTE
 	 * 현재 유저 위치의 반경에 다른 사용자들의 위치가 속하는지 판단 API
 	 */
-	@GetMapping(value = "/matching/{memberId}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<MatchResponseDto> matching(@PathVariable Long memberId) {
-		return ResponseEntity.ok(gpsService.matchUser(memberId));
+	@GetMapping(value = "/matching", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<MatchResponseDto> matching(Principal principal) {
+		return ResponseEntity.ok(gpsService.matchUser(principal.getName()));
 	}
 }

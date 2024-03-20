@@ -147,4 +147,12 @@ public class MemberService {
         Member member = findByLoginId(principal.getName());
         return !validLogin.checkLogin(member);
     }
+
+    @Transactional(readOnly = true)
+    public MemberTelNumDto findTelNum(Long memberId) {
+        Member member = findMember(memberId);
+        return MemberTelNumDto.builder()
+                .telNum(member.getTelNum())
+                .build();
+    }
 }

@@ -1,9 +1,6 @@
 package io.festival.distance.domain.member.controller;
 
-import io.festival.distance.domain.member.dto.AccountRequestDto;
-import io.festival.distance.domain.member.dto.AccountResponseDto;
-import io.festival.distance.domain.member.dto.MemberInfoDto;
-import io.festival.distance.domain.member.dto.MemberSignDto;
+import io.festival.distance.domain.member.dto.*;
 import io.festival.distance.domain.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -88,5 +85,13 @@ public class MemberController {
     @GetMapping("/check/profile")
     public ResponseEntity<Boolean> checkProfile(Principal principal){
         return ResponseEntity.ok(memberService.isExistProfile(principal));
+    }
+
+    /** NOTE
+     * 사용자 전화번호 조회
+     */
+    @GetMapping("/tel-num/{memberId}")
+    public ResponseEntity<MemberTelNumDto> getTelNum(@PathVariable Long memberId){
+        return ResponseEntity.ok(memberService.findTelNum(memberId));
     }
 }
