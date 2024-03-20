@@ -7,13 +7,18 @@ import io.festival.distance.domain.conversation.roommember.entity.RoomMember;
 import io.festival.distance.domain.member.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import javax.sound.midi.MetaMessage;
 import java.util.List;
 import java.util.Optional;
 
 public interface RoomMemberRepository extends JpaRepository<RoomMember, Long> {
-    Optional<RoomMember> findByChatRoomAndMember(ChatRoom chatRoom, Member member);
+    RoomMember findByChatRoomAndMember(ChatRoom chatRoom, Member member);
     RoomMember findByChatRoom(ChatRoom chatRoom);
     //RoomMember findByMemberAndChatRoom(Member member,ChatRoom chatRoom);
     RoomMember findByMemberAndChatRoom(Member member, ChatRoom chatRoom);
     List<RoomMember> findAllByMember(Member member);
+
+    Long countByMember(Member member);
+
+    //RoomMember findByChatRoomAndMember(Long roomId, Member member);
 }
