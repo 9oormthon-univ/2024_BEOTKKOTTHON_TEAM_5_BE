@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -30,9 +31,10 @@ public class StompController {
     @MessageMapping("/chat/{roomId}") //app/chat/{roomId}로 요청이 들어왔을 때 -> 발신
     @SendTo("/topic/chatroom/{roomId}") // Subscription URL -> 수신
     public ResponseEntity<ChatMessageResponseDto> sendMessage(@DestinationVariable Long roomId,
-                                                              @RequestBody ChatMessageDto chatMessageDto) {
+                                                              @RequestBody ChatMessageDto chatMessageDto,
+                                                              Principal principal) {
         ChatRoom chatRoom = chatRoomService.findRoom(roomId);
-        Long chatMessageId = chatMessageService.createMessage(chatRoom, chatMessageDto);
+        Long chatMessageId = chatMessageService.createMessage(chatRoom, chatMessageDto,principal.getName());
         List<ChatRoomSession> sessionByChatRoom = chatRoomSessionService.findSessionByChatRoom(chatRoom); //2개가 나올 듯?
         for(ChatRoomSession chatRoomSession :sessionByChatRoom){
             Long memberId = chatRoomSession.getMemberId();

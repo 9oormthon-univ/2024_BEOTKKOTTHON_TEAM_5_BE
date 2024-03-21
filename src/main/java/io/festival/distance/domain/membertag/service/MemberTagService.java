@@ -18,12 +18,13 @@ import java.util.stream.IntStream;
 public class MemberTagService {
     private final MemberTagRepository memberTagRepository;
 
-    /** NOTE
+    /**
+     * NOTE
      * 사용자가 고른 태그를 갯수와 상관없이 MemberTag테이블에 저장
      */
     @Transactional
-    public void updateTag(Member member, List<MemberTagDto> memberTagDto){
-        List<MemberTag> memberTagList=new ArrayList<>();
+    public void updateTag(Member member, List<MemberTagDto> memberTagDto) {
+        List<MemberTag> memberTagList = new ArrayList<>();
 
         for (MemberTagDto tagDto : memberTagDto) {
             MemberTag memberTag = MemberTag.builder()
@@ -37,10 +38,10 @@ public class MemberTagService {
 
 
     @Transactional(readOnly = true)
-    public List<MemberTagDto> showTag(Member member){
+    public List<MemberTagDto> showTag(Member member) {
         List<MemberTag> allByMember = memberTagRepository.findAllByMember(member);
-        List<MemberTagDto> tagDtoList=new ArrayList<>();
-        for(MemberTag tag:allByMember){
+        List<MemberTagDto> tagDtoList = new ArrayList<>();
+        for (MemberTag tag : allByMember) {
             MemberTagDto tagDto = MemberTagDto.builder()
                     .tag(tag.getTagName())
                     .build();
@@ -50,10 +51,24 @@ public class MemberTagService {
     }
 
     @Transactional
-    public void modifyTag(Member member, List<MemberTagDto> memberTagDto){
+    public void modifyTag(Member member, List<MemberTagDto> memberTagDto) {
         List<MemberTag> allByMember = memberTagRepository.findAllByMember(member);
-        IntStream.range(0, allByMember.size()).forEach(i -> {
-            allByMember.get(i).modifyTag(memberTagDto.get(i).tag());
-        });
+
+        for (int i = 0; i < memberTagDto.size(); i++) {
+            MemberTagDto dto = memberTagDto.get(i);
+            if (allByMember.size() > i) {
+                allByMember.get(i).modifyTag(dto.tag());
+            } else {
+                MemberTag tag = MemberTag.builder()  //새롭게 생성
+                        .member(member)
+                        .tagName(dto.tag())
+                        .build();
+                memberTagRepository.save(tag);
+            }
+        }
+
+        if (allByMember.size() > memberTagDto.size()) { //기존의 태그 개수가 더 많은 경우
+            memberTagRepository.deleteAll(allByMember.subList(memberTagDto.size(), allByMember.size()));
+        }
     }
 }

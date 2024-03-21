@@ -16,7 +16,7 @@ public class FirebaseConfig {
 	 * GoogleCredentials 객체를 생성 (Firebase에 접근시 서버 인증 정보)
  	 */
 	// Firebase Admin SDK private key 파일 경로
-	//static final String FILEPATH = "./firebaseAdminSDKPrivateKey.json";
+	static final String FILEPATH = "firebaseAdminSDKPrivateKey.json";;
 
 	@Value("MY_JSON")
 	private String myJson;
@@ -25,8 +25,8 @@ public class FirebaseConfig {
 	public void firebaseInitialize() {
 		System.out.println("myJson: " + myJson);
 		try {
-			//String fullPath = System.getProperty("user.dir") + "/" + FILEPATH;
-			String fullPath="/home/ubuntu/2024_BEOTKKOTTHON_TEAM_5_BE/firebaseAdminSDKPrivateKey.json";
+			String fullPath = System.getProperty("user.dir") + "/" + FILEPATH;
+			//String fullPath="/home/ubuntu/2024_BEOTKKOTTHON_TEAM_5_BE/firebaseAdminSDKPrivateKey.json";
 			System.out.println(fullPath);
 			// FirebaseOptions 객체를 생성 (Firebase 접근시 서버 인증 정보)
 			FirebaseOptions firebaseOptions = FirebaseOptions.builder()
