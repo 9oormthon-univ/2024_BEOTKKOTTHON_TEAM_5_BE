@@ -9,6 +9,7 @@ import io.festival.distance.domain.conversation.chatroomsession.repository.ChatR
 import io.festival.distance.domain.conversation.roommember.entity.RoomMember;
 import io.festival.distance.domain.conversation.roommember.service.RoomMemberService;
 import io.festival.distance.domain.member.entity.Member;
+import io.festival.distance.domain.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -23,14 +24,17 @@ import java.util.stream.Collectors;
 public class ChatMessageService {
     private final ChatMessageRepository chatMessageRepository;
     private final RoomMemberService roomMemberService;
+    private final MemberService memberService;
 
     @Transactional
-    public Long createMessage(ChatRoom chatRoom, ChatMessageDto chatMessageDto) {
+    public Long createMessage(ChatRoom chatRoom, ChatMessageDto chatMessageDto,String loginId) {
+        Member member = memberService.findByLoginId(loginId);
         ChatMessage message = ChatMessage.builder()
                 .senderId(chatMessageDto.getSenderId())
                 .chatMessage(chatMessageDto.getChatMessage())
                 .unreadCount(2)
                 .chatRoom(chatRoom)
+                .senderName(member.getNickName())
                 .build();
         return chatMessageRepository.save(message).getChatMessageId();
     }
