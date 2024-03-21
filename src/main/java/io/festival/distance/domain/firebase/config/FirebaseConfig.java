@@ -1,4 +1,5 @@
 package io.festival.distance.domain.firebase.config;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import javax.annotation.PostConstruct;
@@ -26,8 +27,10 @@ public class FirebaseConfig {
 		System.out.println("myJson: " + myJson);
 		try {
 			System.out.println("절대경로>>> "+ System.getProperty("user.dir"));
+			System.out.println(new File("").getAbsolutePath());
+			System.out.println(String.format("%s/%s", new File("").getAbsolutePath(), "firebaseAdminSDKPrivateKey.json"));
 			//String fullPath = System.getProperty("user.dir") + "/" + FILEPATH;
-			String fullPath="../../../../../../firebaseAdminSDKPrivateKey.json";
+			String fullPath=String.format("%s/%s", new File("").getAbsolutePath(), "firebaseAdminSDKPrivateKey.json");
 			System.out.println(fullPath);
 			// FirebaseOptions 객체를 생성 (Firebase 접근시 서버 인증 정보)
 			FirebaseOptions firebaseOptions = FirebaseOptions.builder()

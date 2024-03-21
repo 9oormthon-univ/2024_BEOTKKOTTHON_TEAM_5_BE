@@ -37,4 +37,4 @@ out/
 .vscode/
 .env
 .env
-firebaseAdminSDKPrivateKey.json
+src/main/resources/firebaseAdminSDKPrivateKey.json
