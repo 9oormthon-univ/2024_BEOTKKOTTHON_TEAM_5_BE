@@ -5,6 +5,8 @@ import io.festival.distance.domain.conversation.chat.dto.ChatMessageResponseDto;
 import io.festival.distance.domain.conversation.chat.entity.ChatMessage;
 import io.festival.distance.domain.conversation.chat.repository.ChatMessageRepository;
 import io.festival.distance.domain.conversation.chatroom.entity.ChatRoom;
+import io.festival.distance.domain.conversation.chatroomsession.entity.ChatRoomSession;
+import io.festival.distance.domain.conversation.chatroomsession.repository.ChatRoomSessionRepository;
 import io.festival.distance.domain.conversation.roommember.entity.RoomMember;
 import io.festival.distance.domain.conversation.roommember.service.RoomMemberService;
 import io.festival.distance.domain.member.entity.Member;
@@ -21,6 +23,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class ChatMessageService {
     private final ChatMessageRepository chatMessageRepository;
+    private final ChatRoomSessionRepository chatRoomSessionRepository;
     private final RoomMemberService roomMemberService;
 
     @Transactional
@@ -32,6 +35,11 @@ public class ChatMessageService {
                 .chatRoom(chatRoom)
                 .build();
 
+        // 채팅방에 받는 사람 있는지 확인 먼저
+        if(!chatRoomSessionRepository.existsByMemberIdAndChatRoom(chatMessageDto.getSenderId(), chatRoom)){
+            System.out.println("채팅방에 받는 사람이 없으므로 알림을 보내야합니다.");
+        //     //알람 로직
+        }
         return chatMessageRepository.save(message).getChatMessageId();
     }
 

@@ -8,9 +8,11 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ChatRoomSessionRepository extends JpaRepository<ChatRoomSession,Long> {
-    boolean existsByMemberIdAndChatRoom(Long memberId, Long chatRoomId);
+
+    boolean existsByMemberIdAndChatRoom(Long memberId, ChatRoom chatRoom);
     List<ChatRoomSession> findByChatRoom(ChatRoom chatRoom);
 
     ChatRoomSession findByMemberIdAndChatRoom(Long memberId, ChatRoom chatRoom);
     Optional<ChatRoomSession> findBySessionName(String sessionName);
+
 }
