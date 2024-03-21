@@ -27,14 +27,12 @@ public class ChatMessageService {
     private final MemberService memberService;
 
     @Transactional
-    public Long createMessage(ChatRoom chatRoom, ChatMessageDto chatMessageDto,String loginId) {
-        Member member = memberService.findByLoginId(loginId);
+    public Long createMessage(ChatRoom chatRoom, ChatMessageDto chatMessageDto) {
         ChatMessage message = ChatMessage.builder()
                 .senderId(chatMessageDto.getSenderId())
                 .chatMessage(chatMessageDto.getChatMessage())
                 .unreadCount(2)
                 .chatRoom(chatRoom)
-                .senderName(member.getNickName())
                 .build();
         return chatMessageRepository.save(message).getChatMessageId();
     }
