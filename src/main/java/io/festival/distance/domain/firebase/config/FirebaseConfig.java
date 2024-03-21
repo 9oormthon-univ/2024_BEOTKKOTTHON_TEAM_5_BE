@@ -17,12 +17,9 @@ public class FirebaseConfig {
  	 */
 	// Firebase Admin SDK private key 파일 경로
 	static final String FILEPATH = "src/main/java/io/festival/distance/domain/firebase/config/firebaseAdminSDKPrivateKey.json";
-	@Value("MY_JSON")
-	private String myJson;
 
 	@PostConstruct //spring 어플리케이션 실행될 때 아래 코드 바로 실행됨
 	public void firebaseInitialize() {
-		System.out.println("myJson: " + myJson);
 		try {
 			String fullPath = System.getProperty("user.dir") + "/" + FILEPATH;
 			System.out.println(fullPath);
