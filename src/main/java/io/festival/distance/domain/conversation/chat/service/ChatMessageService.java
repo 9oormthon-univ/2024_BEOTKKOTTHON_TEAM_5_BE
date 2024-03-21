@@ -22,7 +22,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -39,34 +38,21 @@ public class ChatMessageService {
                 .unreadCount(2)
                 .chatRoom(chatRoom)
                 .build();
-
-
-        // 채팅방에 받는 사람 있는지 확인 먼저
-        if(!chatRoomSessionRepository.existsByMemberIdAndChatRoom(chatMessageDto.getSenderId(), chatRoom)){
-            System.out.println("------------------------채팅방에 받는 사람이 없으므로 알림을 보내야합니다.");
-
-            //근데 알림을 보내려면 수신자의 clientToken을 member 테이블에서 조회해야함.
-            // FCMService.sendNotification(receiverToken); 로 알림을 보낸다.
-            Member receiver = memberRepository.findById(chatMessageDto.getSenderId()).orElse(null);
-            if (receiver != null) {
-                // receiver의 clientToken을 조회하여 FCM 알림 전송
-                FCMService.sendNotification(receiver.getClientToken());
-            }
-            // Member temp = Member.builder().memberId(chatMessageDto.getSenderId()).build();
-            // FCMService.sendNotification(receiver.getClientToken());
-            //
-            // // member DB에서 해당 유저의 clientToken 조회
-            // Member
-            // System.out.println("???????????? "+temp.getNickName() + " " + temp.getClientToken());
-            // Member receiver = Member.builder().memberId(chatMessageDto.getSenderId()).build();
-            // String receiverToken = receiver.getClientToken();
-            // //알림 로직
-            // System.out.println("memberId 6번이면 되는데;; " + receiver.getMemberId() + " " + receiver.getClientToken());
-            // FCMService.sendNotification(receiverToken);
-        } else {
-            System.out.println("------------------------채팅방에 사람이 있으므로 알람을 안 보냈습니다.");
-        }
         return chatMessageRepository.save(message).getChatMessageId();
+    }
+
+    @Transactional
+    public void sendNotificationIfReceiverNotInChatRoom(Long senderId, Long receiverId, ChatRoom chatRoom, String chatMessage){
+        // 채팅방에 받는 사람 있는지 확인
+        System.out.println(receiverId);
+        if(!chatRoomSessionRepository.existsByMemberIdAndChatRoom(receiverId, chatRoom)){
+            // 알림을 보낼 떄 필요한 값들
+            Member receiver = memberRepository.findById(receiverId).orElse(null); // 수신자의 clientToken
+            String SenderNickName = String.valueOf(memberRepository.findById(senderId).orElseThrow()); // 발신자의 닉네임
+            System.out.println("여기까지 왔습니다!!!!!!!!!!!!!");
+            // FCM 알림 전송
+            if (receiver != null) FCMService.sendNotification(SenderNickName, receiver.getClientToken(), chatMessage);
+        }
     }
 
     @Transactional
