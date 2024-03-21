@@ -16,8 +16,7 @@ public class FirebaseConfig {
 	 * GoogleCredentials 객체를 생성 (Firebase에 접근시 서버 인증 정보)
  	 */
 	// Firebase Admin SDK private key 파일 경로
-	static final String FILEPATH = "./firebaseAdminSDKPrivateKey.json";
-
+	static final String FILEPATH = "src/main/java/io/festival/distance/domain/firebase/config/firebaseAdminSDKPrivateKey.json";
 	@Value("MY_JSON")
 	private String myJson;
 
