@@ -37,10 +37,10 @@ public class ChatMessageService {
 
     @Transactional
     public Long createMessage(ChatRoom chatRoom, ChatMessageDto chatMessageDto) {
-        //Member member = memberService.findByLoginId(loginId);
         WordFiltering wordFiltering = new WordFiltering();
         if(wordFiltering.checkMessage(chatMessageDto.getChatMessage()))
             throw new DistanceException(ErrorCode.CONTAIN_BAD_WORD);
+
         ChatMessage message = ChatMessage.builder()
                 .senderId(chatMessageDto.getSenderId())
                 .chatMessage(chatMessageDto.getChatMessage())
@@ -59,8 +59,8 @@ public class ChatMessageService {
             // 알림을 보낼 떄 필요한 값들
             Member receiver = memberRepository.findById(receiverId).orElse(null); // 수신자의 clientToken
             String SenderNickName = String.valueOf(memberRepository.findById(senderId).orElseThrow()); // 발신자의 닉네임
-            // FCM 알림 전송
-            if (receiver != null) fcmService.sendNotification(receiver.getClientToken());
+            // FCM 알림 전송 발송자 닉네임이, chatMessage를 특정 clietnToken에게
+            if (receiver != null) fcmService.sendNotification(receiver.getClientToken(), SenderNickName, chatMessage);
         }
     }
 
