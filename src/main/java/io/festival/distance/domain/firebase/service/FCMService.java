@@ -22,12 +22,12 @@ public class FCMService {
 
 		// 알림 내용
 		Message firebaseMessage = Message.builder()
-			.setToken(clientToken)
-			.setNotification(Notification.builder()
-				.setTitle(title)
-				.setBody(message)
-				.build())
-			.build();
+				.setToken(clientToken)
+				.setNotification(Notification.builder()
+						.setTitle(title)
+						.setBody(message)
+						.build())
+				.build();
 
 		// 알림 전송 및 결과 처리
 		String response;

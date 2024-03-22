@@ -33,7 +33,7 @@ public class StompController {
     public ResponseEntity<ChatMessageResponseDto> sendMessage(@DestinationVariable Long roomId,
                                                               @RequestBody ChatMessageDto chatMessageDto) {
         ChatRoom chatRoom = chatRoomService.findRoom(roomId);
-        Long chatMessageId = chatMessageService.createMessage(chatRoom, chatMessageDto, principal.getName());
+        Long chatMessageId = chatMessageService.createMessage(chatRoom, chatMessageDto);
 
         // receiver 에게 PUSH 알림 전송
         String messageContent = chatMessageDto.getChatMessage();

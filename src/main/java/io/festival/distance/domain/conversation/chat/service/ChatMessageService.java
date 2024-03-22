@@ -31,10 +31,11 @@ public class ChatMessageService {
     private final MemberRepository memberRepository;
     private final RoomMemberService roomMemberService;
     private final MemberService memberService;
+    private final FCMService fcmService;
 
     @Transactional
-    public Long createMessage(ChatRoom chatRoom, ChatMessageDto chatMessageDto, String loginId) {
-        Member member = memberService.findByLoginId(loginId);
+    public Long createMessage(ChatRoom chatRoom, ChatMessageDto chatMessageDto) {
+        //Member member = memberService.findByLoginId(loginId);
         ChatMessage message = ChatMessage.builder()
                 .senderId(chatMessageDto.getSenderId())
                 .chatMessage(chatMessageDto.getChatMessage())
@@ -54,7 +55,7 @@ public class ChatMessageService {
             Member receiver = memberRepository.findById(receiverId).orElse(null); // 수신자의 clientToken
             String SenderNickName = String.valueOf(memberRepository.findById(senderId).orElseThrow()); // 발신자의 닉네임
             // FCM 알림 전송
-            if (receiver != null) FCMService.sendNotification(SenderNickName, receiver.getClientToken(), chatMessage);
+            if (receiver != null) fcmService.sendNotification(receiver.getClientToken());
         }
     }
 
