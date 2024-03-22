@@ -19,7 +19,6 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class WebSocketEventListener {
      final ChatRoomSessionService chatRoomSessionService;
-
     @EventListener
     public void handleWebSocketConnectListener(SessionConnectedEvent event) {
         StompHeaderAccessor accessor = StompHeaderAccessor.wrap(event.getMessage());

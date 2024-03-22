@@ -31,8 +31,7 @@ public class StompController {
     @MessageMapping("/chat/{roomId}") //app/chat/{roomId}로 요청이 들어왔을 때 -> 발신
     @SendTo("/topic/chatroom/{roomId}") // Subscription URL -> 수신
     public ResponseEntity<ChatMessageResponseDto> sendMessage(@DestinationVariable Long roomId,
-                                                              @RequestBody ChatMessageDto chatMessageDto,
-                                                              Principal principal) {
+                                                              @RequestBody ChatMessageDto chatMessageDto) {
         ChatRoom chatRoom = chatRoomService.findRoom(roomId);
         Long chatMessageId = chatMessageService.createMessage(chatRoom, chatMessageDto, principal.getName());
 

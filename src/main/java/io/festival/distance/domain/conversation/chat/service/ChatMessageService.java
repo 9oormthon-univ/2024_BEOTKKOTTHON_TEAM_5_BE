@@ -40,7 +40,6 @@ public class ChatMessageService {
                 .chatMessage(chatMessageDto.getChatMessage())
                 .unreadCount(2)
                 .chatRoom(chatRoom)
-                .senderName(member.getNickName())
                 .build();
 
         return chatMessageRepository.save(message).getChatMessageId();
