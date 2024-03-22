@@ -7,6 +7,7 @@ import io.festival.distance.domain.memberhobby.entity.MemberHobby;
 import io.festival.distance.domain.memberhobby.repository.MemberHobbyRepository;
 import io.festival.distance.domain.membertag.entity.MemberTag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -49,8 +50,21 @@ public class MemberHobbyService {
     @Transactional
     public void modifyHobby(Member member, List<MemberHobbyDto> memberHobbyDto){
         List<MemberHobby> allByMember = memberHobbyRepository.findAllByMember(member);
-        IntStream.range(0, allByMember.size()).forEach(i -> {
-            allByMember.get(i).modifyHobby(memberHobbyDto.get(i).hobby());
-        });
+        for (int i = 0; i < memberHobbyDto.size(); i++) {
+            MemberHobbyDto dto=memberHobbyDto.get(i);
+            if(allByMember.size()>i)
+                allByMember.get(i).modifyHobby(dto.hobby());
+            else{
+                MemberHobby hobby = MemberHobby.builder()
+                        .member(member)
+                        .hobbyName(dto.hobby())
+                        .build();
+                memberHobbyRepository.save(hobby);
+            }
+        }
+
+        if(allByMember.size()>memberHobbyDto.size()){
+            memberHobbyRepository.deleteAll(allByMember.subList(memberHobbyDto.size(),allByMember.size()));
+        }
     }
 }

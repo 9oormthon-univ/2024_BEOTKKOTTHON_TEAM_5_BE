@@ -13,15 +13,15 @@ import io.festival.distance.domain.firebase.service.FCMService;
 import io.festival.distance.domain.member.entity.Member;
 import io.festival.distance.domain.member.repository.MemberRepository;
 import io.festival.distance.exception.DistanceException;
+import io.festival.distance.domain.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
-import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -30,14 +30,19 @@ public class ChatMessageService {
     private final ChatRoomSessionRepository chatRoomSessionRepository;
     private final MemberRepository memberRepository;
     private final RoomMemberService roomMemberService;
+    private final MemberService memberService;
+
     @Transactional
-    public Long createMessage(ChatRoom chatRoom, ChatMessageDto chatMessageDto) {
+    public Long createMessage(ChatRoom chatRoom, ChatMessageDto chatMessageDto, String loginId) {
+        Member member = memberService.findByLoginId(loginId);
         ChatMessage message = ChatMessage.builder()
                 .senderId(chatMessageDto.getSenderId())
                 .chatMessage(chatMessageDto.getChatMessage())
                 .unreadCount(2)
                 .chatRoom(chatRoom)
+                .senderName(member.getNickName())
                 .build();
+
         return chatMessageRepository.save(message).getChatMessageId();
     }
 
@@ -49,7 +54,6 @@ public class ChatMessageService {
             // 알림을 보낼 떄 필요한 값들
             Member receiver = memberRepository.findById(receiverId).orElse(null); // 수신자의 clientToken
             String SenderNickName = String.valueOf(memberRepository.findById(senderId).orElseThrow()); // 발신자의 닉네임
-            System.out.println("여기까지 왔습니다!!!!!!!!!!!!!");
             // FCM 알림 전송
             if (receiver != null) FCMService.sendNotification(SenderNickName, receiver.getClientToken(), chatMessage);
         }
