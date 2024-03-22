@@ -14,6 +14,8 @@ import io.festival.distance.domain.member.entity.Member;
 import io.festival.distance.domain.member.repository.MemberRepository;
 import io.festival.distance.exception.DistanceException;
 import io.festival.distance.domain.member.service.MemberService;
+import io.festival.distance.exception.ErrorCode;
+import io.peaceingaza.filtering.cusswordfilter.WordFiltering;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -36,6 +38,9 @@ public class ChatMessageService {
     @Transactional
     public Long createMessage(ChatRoom chatRoom, ChatMessageDto chatMessageDto) {
         //Member member = memberService.findByLoginId(loginId);
+        WordFiltering wordFiltering = new WordFiltering();
+        if(wordFiltering.checkMessage(chatMessageDto.getChatMessage()))
+            throw new DistanceException(ErrorCode.CONTAIN_BAD_WORD);
         ChatMessage message = ChatMessage.builder()
                 .senderId(chatMessageDto.getSenderId())
                 .chatMessage(chatMessageDto.getChatMessage())

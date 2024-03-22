@@ -8,6 +8,7 @@ import io.festival.distance.domain.conversation.chatroom.service.ChatRoomService
 import io.festival.distance.domain.conversation.chatroomsession.entity.ChatRoomSession;
 import io.festival.distance.domain.conversation.chatroomsession.service.ChatRoomSessionService;
 import io.festival.distance.domain.conversation.roommember.service.RoomMemberService;
+import io.peaceingaza.filtering.cusswordfilter.WordFiltering;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
