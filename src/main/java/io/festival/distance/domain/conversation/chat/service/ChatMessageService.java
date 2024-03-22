@@ -5,10 +5,14 @@ import io.festival.distance.domain.conversation.chat.dto.ChatMessageResponseDto;
 import io.festival.distance.domain.conversation.chat.entity.ChatMessage;
 import io.festival.distance.domain.conversation.chat.repository.ChatMessageRepository;
 import io.festival.distance.domain.conversation.chatroom.entity.ChatRoom;
+import io.festival.distance.domain.conversation.chatroomsession.entity.ChatRoomSession;
 import io.festival.distance.domain.conversation.chatroomsession.repository.ChatRoomSessionRepository;
 import io.festival.distance.domain.conversation.roommember.entity.RoomMember;
 import io.festival.distance.domain.conversation.roommember.service.RoomMemberService;
+import io.festival.distance.domain.firebase.service.FCMService;
 import io.festival.distance.domain.member.entity.Member;
+import io.festival.distance.domain.member.repository.MemberRepository;
+import io.festival.distance.exception.DistanceException;
 import io.festival.distance.domain.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,18 +27,35 @@ import java.util.stream.Collectors;
 @Slf4j
 public class ChatMessageService {
     private final ChatMessageRepository chatMessageRepository;
+    private final ChatRoomSessionRepository chatRoomSessionRepository;
+    private final MemberRepository memberRepository;
     private final RoomMemberService roomMemberService;
     private final MemberService memberService;
 
     @Transactional
-    public Long createMessage(ChatRoom chatRoom, ChatMessageDto chatMessageDto) {
+    public Long createMessage(ChatRoom chatRoom, ChatMessageDto chatMessageDto, String loginId) {
+        Member member = memberService.findByLoginId(loginId);
         ChatMessage message = ChatMessage.builder()
                 .senderId(chatMessageDto.getSenderId())
                 .chatMessage(chatMessageDto.getChatMessage())
                 .unreadCount(2)
                 .chatRoom(chatRoom)
                 .build();
+
         return chatMessageRepository.save(message).getChatMessageId();
+    }
+
+    @Transactional
+    public void sendNotificationIfReceiverNotInChatRoom(Long senderId, Long receiverId, ChatRoom chatRoom, String chatMessage){
+        // 채팅방에 받는 사람 있는지 확인
+        System.out.println(receiverId);
+        if(!chatRoomSessionRepository.existsByMemberIdAndChatRoom(receiverId, chatRoom)){
+            // 알림을 보낼 떄 필요한 값들
+            Member receiver = memberRepository.findById(receiverId).orElse(null); // 수신자의 clientToken
+            String SenderNickName = String.valueOf(memberRepository.findById(senderId).orElseThrow()); // 발신자의 닉네임
+            // FCM 알림 전송
+            if (receiver != null) FCMService.sendNotification(SenderNickName, receiver.getClientToken(), chatMessage);
+        }
     }
 
     @Transactional

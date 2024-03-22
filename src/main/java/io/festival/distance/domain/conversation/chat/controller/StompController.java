@@ -33,8 +33,17 @@ public class StompController {
     public ResponseEntity<ChatMessageResponseDto> sendMessage(@DestinationVariable Long roomId,
                                                               @RequestBody ChatMessageDto chatMessageDto) {
         ChatRoom chatRoom = chatRoomService.findRoom(roomId);
-        Long chatMessageId = chatMessageService.createMessage(chatRoom, chatMessageDto);
+        Long chatMessageId = chatMessageService.createMessage(chatRoom, chatMessageDto, principal.getName());
+
+        // receiver 에게 PUSH 알림 전송
+        String messageContent = chatMessageDto.getChatMessage();
+        Long senderId = chatMessageDto.getSenderId();
+        Long receiverId = chatMessageDto.getReceiverId();
+        chatMessageService.sendNotificationIfReceiverNotInChatRoom(senderId, receiverId, chatRoom, messageContent);
+
+        // 채팅방 새션 조회
         List<ChatRoomSession> sessionByChatRoom = chatRoomSessionService.findSessionByChatRoom(chatRoom); //2개가 나올 듯?
+        // 채팅 읽음 갱신
         for(ChatRoomSession chatRoomSession :sessionByChatRoom){
             Long memberId = chatRoomSession.getMemberId();
             roomMemberService.updateLastMessage(memberId,chatMessageId,roomId); //가장 최근에 읽은 메시지 수정
