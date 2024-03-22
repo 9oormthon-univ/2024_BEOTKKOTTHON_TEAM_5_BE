@@ -51,6 +51,7 @@ public class MemberService {
                 .college(signDto.college())
                 .department(signDto.department())
                 .authority(Authority.ROLE_USER)
+                .declarationCount(0)
                 .activated(true)
                 .build();
        memberRepository.save(member);

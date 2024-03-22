@@ -1,5 +1,6 @@
 package io.festival.distance.domain.conversation.chatroom.controller;
 
+import io.festival.distance.domain.conversation.chat.dto.ChatMessageDto;
 import io.festival.distance.domain.conversation.chat.dto.ChatMessageResponseDto;
 import io.festival.distance.domain.conversation.chat.service.ChatMessageService;
 import io.festival.distance.domain.conversation.chatroom.dto.ChatRoomDto;
@@ -7,6 +8,7 @@ import io.festival.distance.domain.conversation.chatroom.dto.ChatRoomInfoDto;
 import io.festival.distance.domain.conversation.chatroom.service.ChatFacadeService;
 import io.festival.distance.domain.conversation.chatroom.service.ChatRoomService;
 import io.festival.distance.domain.member.service.MemberService;
+import io.peaceingaza.filtering.cusswordfilter.WordFiltering;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -41,5 +43,11 @@ public class ChatRoomController {
     @DeleteMapping("/delete/{roomId}")
     public ResponseEntity<Long> deleteRoom(@PathVariable Long roomId){
         return ResponseEntity.ok(chatRoomService.delete(roomId));
+    }
+
+    @PostMapping("/check/badword")
+    public ResponseEntity<Boolean> checkBadWord(@RequestBody ChatMessageDto chatMessageDto){
+        WordFiltering wordFiltering = new WordFiltering();
+        return ResponseEntity.ok(wordFiltering.checkMessage(chatMessageDto.getChatMessage()));
     }
 }

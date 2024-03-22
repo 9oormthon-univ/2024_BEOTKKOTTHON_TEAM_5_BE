@@ -4,6 +4,7 @@ import io.festival.distance.domain.base.BaseTimeEntity;
 import io.festival.distance.domain.gps.dto.GpsDto;
 import io.festival.distance.domain.member.dto.AccountRequestDto;
 import io.festival.distance.domain.member.dto.MemberInfoDto;
+import io.swagger.models.auth.In;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -73,6 +74,9 @@ public class Member extends BaseTimeEntity {
 
     @Column(name = "client_token")
     private String clientToken;
+
+    @Column(name = "declaration_count")
+    private Integer declarationCount;
 
     @Enumerated(EnumType.STRING)
     private Authority authority;
