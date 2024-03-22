@@ -99,7 +99,7 @@ public class MemberController {
     /** NOTE
      * 아이디 중복 확인
      */
-    @GetMapping("/check/id")
+    @PostMapping("/check/id")
     public ResponseEntity<Boolean> checkLoginId(@RequestBody CheckLoginIdDto checkLoginIdDto){
         return ResponseEntity.ok(validSignup.validationLoginId(checkLoginIdDto.loginId()));
     }
