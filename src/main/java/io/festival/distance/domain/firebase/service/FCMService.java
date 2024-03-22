@@ -12,7 +12,10 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class FCMService {
-	public static notificationDto sendNotification(String clientToken) {
+
+	private final FirebaseMessaging firebaseMessaging;
+
+	public notificationDto sendNotification(String clientToken) {
 		String title = "서버 측 제목입니다";
 		String message = "서버 측 메세지입니다";
 		System.out.println("Client 토큰: " + clientToken);
@@ -29,7 +32,7 @@ public class FCMService {
 		// 알림 전송 및 결과 처리
 		String response;
 		try {
-			response = FirebaseMessaging.getInstance().send(firebaseMessage);
+			response = firebaseMessaging.send(firebaseMessage);
 		} catch (FirebaseMessagingException e) {
 			e.printStackTrace();
 			response = "알림 전송 실패";

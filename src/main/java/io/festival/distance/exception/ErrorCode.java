@@ -10,6 +10,7 @@ public enum ErrorCode {
     NOT_NULL_NICKNAME(HttpStatusCode.BAD_REQUEST.getStatus(),"아무것도 입력하지 않았습니다!"),
     EXIST_LOGIN_ID(HttpStatusCode.BAD_REQUEST.getStatus(), "이미 존재하는 ID 입니다!"),
     EXIST_EMAIL(HttpStatusCode.BAD_REQUEST.getStatus(), "이미 존재하는 Email 입니다!"),
+    EXIST_ROOM(HttpStatusCode.BAD_REQUEST.getStatus(),"이미 상대방과의 방이 존재합니다!"),
     NOT_CORRECT_PASSWORD(HttpStatusCode.BAD_REQUEST.getStatus(),"비밀번호가 일치하지 않습니다!"),
     NOT_EXIST_ADMIN(HttpStatusCode.BAD_REQUEST.getStatus(), "존재하지 않는 관리자입니다!"),
     NOT_EXIST_MEMBER(HttpStatusCode.BAD_REQUEST.getStatus(), "존재하지 않는 유저입니다!"),

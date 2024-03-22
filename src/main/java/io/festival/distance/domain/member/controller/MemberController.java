@@ -2,6 +2,7 @@ package io.festival.distance.domain.member.controller;
 
 import io.festival.distance.domain.member.dto.*;
 import io.festival.distance.domain.member.service.MemberService;
+import io.festival.distance.domain.member.validsignup.ValidSignup;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +15,7 @@ import java.security.Principal;
 @CrossOrigin
 public class MemberController {
     private final MemberService memberService;
-
+    private final ValidSignup validSignup;
     /** NOTE
      * 회원가입 API
      */
@@ -93,5 +94,13 @@ public class MemberController {
     @GetMapping("/tel-num/{memberId}")
     public ResponseEntity<MemberTelNumDto> getTelNum(@PathVariable Long memberId){
         return ResponseEntity.ok(memberService.findTelNum(memberId));
+    }
+
+    /** NOTE
+     * 아이디 중복 확인
+     */
+    @GetMapping("/check/id")
+    public ResponseEntity<Boolean> checkLoginId(@RequestBody CheckLoginIdDto checkLoginIdDto){
+        return ResponseEntity.ok(validSignup.validationLoginId(checkLoginIdDto.loginId()));
     }
 }
