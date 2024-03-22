@@ -5,7 +5,6 @@ import io.festival.distance.domain.conversation.chat.dto.ChatMessageResponseDto;
 import io.festival.distance.domain.conversation.chat.entity.ChatMessage;
 import io.festival.distance.domain.conversation.chat.repository.ChatMessageRepository;
 import io.festival.distance.domain.conversation.chatroom.entity.ChatRoom;
-import io.festival.distance.domain.conversation.chatroomsession.entity.ChatRoomSession;
 import io.festival.distance.domain.conversation.chatroomsession.repository.ChatRoomSessionRepository;
 import io.festival.distance.domain.conversation.roommember.entity.RoomMember;
 import io.festival.distance.domain.conversation.roommember.service.RoomMemberService;
@@ -37,10 +36,10 @@ public class ChatMessageService {
 
     @Transactional
     public Long createMessage(ChatRoom chatRoom, ChatMessageDto chatMessageDto) {
-        //Member member = memberService.findByLoginId(loginId);
         WordFiltering wordFiltering = new WordFiltering();
         if(wordFiltering.checkMessage(chatMessageDto.getChatMessage()))
             throw new DistanceException(ErrorCode.CONTAIN_BAD_WORD);
+
         ChatMessage message = ChatMessage.builder()
                 .senderId(chatMessageDto.getSenderId())
                 .chatMessage(chatMessageDto.getChatMessage())
@@ -54,13 +53,12 @@ public class ChatMessageService {
     @Transactional
     public void sendNotificationIfReceiverNotInChatRoom(Long senderId, Long receiverId, ChatRoom chatRoom, String chatMessage){
         // 채팅방에 받는 사람 있는지 확인
-        System.out.println(receiverId);
-        if(!chatRoomSessionRepository.existsByMemberIdAndChatRoom(receiverId, chatRoom)){
+        if(!chatRoomSessionRepository.existsByMemberIdAndChatRoom(senderId, chatRoom)){
             // 알림을 보낼 떄 필요한 값들
-            Member receiver = memberRepository.findById(receiverId).orElse(null); // 수신자의 clientToken
-            String SenderNickName = String.valueOf(memberRepository.findById(senderId).orElseThrow()); // 발신자의 닉네임
-            // FCM 알림 전송
-            if (receiver != null) fcmService.sendNotification(receiver.getClientToken());
+            Member sender = memberService.findMember(senderId); //받는 사람
+            String receiverNickName = memberService.findMember(receiverId).getNickName(); // 발신자의 닉네임
+            // FCM 알림 전송 발송자 닉네임이, chatMessage를 특정 clietnToken에게
+            fcmService.sendNotification(sender.getClientToken(), receiverNickName, chatMessage);
         }
     }
 

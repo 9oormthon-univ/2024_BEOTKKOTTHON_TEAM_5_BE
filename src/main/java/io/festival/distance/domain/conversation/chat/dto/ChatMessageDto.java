@@ -11,6 +11,6 @@ import lombok.NoArgsConstructor;
 @Getter
 public class ChatMessageDto {
     private String chatMessage;
-    private Long senderId;
-    private Long receiverId;
+    private Long senderId; //상대방
+    private Long receiverId; //나
 }
