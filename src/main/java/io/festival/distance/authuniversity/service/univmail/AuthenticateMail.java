@@ -17,10 +17,11 @@ public class AuthenticateMail {
 
     public String sendNumber(String schoolEmail) throws MessagingException { //실 서비스
         //schoolEmail= MessageFormat.format("{0}@{1}.ac.kr", schoolEmail,getDomainByName(schoolEmail));
-        UnivMailDto univMailDto = sendMailService.createCertificationNumber(schoolEmail);
+        UnivMailDto univMailDto = sendMailService.createCertificationNumber(schoolEmail);  //번호가 발급
         sendMailService.mailSend(univMailDto); //메일 전송
-        certificationNumber =sendMailService.getTempPassword();
-        return certificationNumber;
+        //certificationNumber =sendMailService.getTempPassword();
+        System.out.println(">>>>>>  "+univMailDto.getTempPw());
+        return univMailDto.getTempPw();
     }
 
     public boolean checkCertificationNumber(String number,String num2){

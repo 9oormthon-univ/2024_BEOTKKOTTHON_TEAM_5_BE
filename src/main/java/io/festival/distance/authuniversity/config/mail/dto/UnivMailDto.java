@@ -13,4 +13,5 @@ public class UnivMailDto {
     private String mailAddress;
     private String title;
     private String message;
+    private String tempPw;
 }
