@@ -154,4 +154,16 @@ public class MemberService {
                 .telNum(member.getTelNum())
                 .build();
     }
+
+    @Transactional
+    public void increaseDeclare(Long memberId){
+        Member member = findMember(memberId);
+        member.updateDeclare();
+    }
+
+    @Transactional
+    public void blockAccount(Long opponentId) {
+        Member member = findMember(opponentId);
+        member.disableAccount();
+    }
 }
