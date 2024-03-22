@@ -17,6 +17,7 @@ public enum ErrorCode {
     NOT_NULL_MEMBER_INFO(HttpStatusCode.LENGTH_REQUIRED.getStatus(), "멤버 프로필을 등록하지 않았습니다!"),
     TOO_MANY_MY_CHATROOM(HttpStatusCode.BAD_REQUEST.getStatus(),"이미 나의 방이 3개입니다!"),
     TOO_MANY_OPPONENT_CHATROOM(HttpStatusCode.BAD_REQUEST.getStatus(),"이미 상대방의 방이 3개입니다!"),
+    CONTAIN_BAD_WORD(HttpStatusCode.BAD_REQUEST.getStatus(), "욕설이 포함되어 있습니다!"),
     NOT_EXIST_AUTHENTICATION(HttpStatusCode.UNAUTHORIZED.getStatus(), "Security Context에 인증 정보가 없습니다!");
 
     private final int status;
