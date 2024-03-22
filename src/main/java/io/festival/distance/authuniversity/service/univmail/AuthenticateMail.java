@@ -25,7 +25,8 @@ public class AuthenticateMail {
     }
 
     public boolean checkCertificationNumber(String number,String num2){
-        System.out.println(num2);//사용자가 입력한 인증번호와 전송된 인증번호와 동일한지 확인
+        System.out.println("내가 입력한 번호>>"+ number);
+        System.out.println("발송된 번호>> "+num2);
         return number.equals(num2);
     }
 }

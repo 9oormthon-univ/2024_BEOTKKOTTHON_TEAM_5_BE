@@ -37,7 +37,7 @@ public class ChatRoomService {
                 .map(roomMember -> {
                     ChatRoom chatRoom = roomMember.getChatRoom();
                     Member opponent=memberRepository.findByNickName(roomMember.getMyRoomName());
-                    ChatMessage message = chatMessageRepository.findTop1ByChatRoomOrderByCreateDt(chatRoom);
+                    ChatMessage message = chatMessageRepository.findTop1ByChatRoomOrderByCreateDtDesc(chatRoom);
                     String lastMessage=Objects.isNull(message)?"새로운 채팅방이 생성되었습니다!": message.getChatMessage();
                     return ChatRoomInfoDto.builder()
                             .chatRoomId(chatRoom.getChatRoomId())

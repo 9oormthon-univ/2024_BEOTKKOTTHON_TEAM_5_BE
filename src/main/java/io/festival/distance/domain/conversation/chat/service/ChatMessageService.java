@@ -5,6 +5,7 @@ import io.festival.distance.domain.conversation.chat.dto.ChatMessageResponseDto;
 import io.festival.distance.domain.conversation.chat.entity.ChatMessage;
 import io.festival.distance.domain.conversation.chat.repository.ChatMessageRepository;
 import io.festival.distance.domain.conversation.chatroom.entity.ChatRoom;
+import io.festival.distance.domain.conversation.chatroomsession.entity.ChatRoomSession;
 import io.festival.distance.domain.conversation.chatroomsession.repository.ChatRoomSessionRepository;
 import io.festival.distance.domain.conversation.roommember.entity.RoomMember;
 import io.festival.distance.domain.conversation.roommember.service.RoomMemberService;
@@ -36,13 +37,11 @@ public class ChatMessageService {
 
     @Transactional
     public Long createMessage(ChatRoom chatRoom, ChatMessageDto chatMessageDto) {
-        WordFiltering wordFiltering = new WordFiltering();
-        if(wordFiltering.checkMessage(chatMessageDto.getChatMessage()))
-            throw new DistanceException(ErrorCode.CONTAIN_BAD_WORD);
-
+        Member member = memberService.findMember(chatMessageDto.getReceiverId());
         ChatMessage message = ChatMessage.builder()
                 .senderId(chatMessageDto.getSenderId())
                 .chatMessage(chatMessageDto.getChatMessage())
+                .senderName(member.getNickName())
                 .unreadCount(2)
                 .chatRoom(chatRoom)
                 .build();
