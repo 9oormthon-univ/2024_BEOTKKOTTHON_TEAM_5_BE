@@ -12,13 +12,12 @@ import java.util.List;
 import java.util.Optional;
 
 public interface RoomMemberRepository extends JpaRepository<RoomMember, Long> {
-    RoomMember findByChatRoomAndMember(ChatRoom chatRoom, Member member);
-    RoomMember findByChatRoom(ChatRoom chatRoom);
-    //RoomMember findByMemberAndChatRoom(Member member,ChatRoom chatRoom);
     RoomMember findByMemberAndChatRoom(Member member, ChatRoom chatRoom);
     List<RoomMember> findAllByMember(Member member);
 
     Long countByMember(Member member);
 
     void deleteByChatRoomAndMember(ChatRoom chatRoom,Member member);
+
+    boolean existsByMemberAndChatRoom(Member member,ChatRoom chatRoom);
 }

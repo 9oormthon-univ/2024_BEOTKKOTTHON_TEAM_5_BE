@@ -3,6 +3,7 @@ package io.festival.distance.domain.conversation.chatroom.service;
 import io.festival.distance.domain.conversation.chatroom.dto.ChatRoomDto;
 import io.festival.distance.domain.conversation.chatroom.entity.ChatRoom;
 import io.festival.distance.domain.conversation.chatroom.repository.ChatRoomRepository;
+import io.festival.distance.domain.conversation.chatroom.validroomcount.ValidExistRoom;
 import io.festival.distance.domain.conversation.chatroom.validroomcount.ValidRoomCount;
 import io.festival.distance.domain.member.entity.Member;
 import io.festival.distance.domain.member.repository.MemberRepository;
@@ -23,6 +24,7 @@ import java.util.List;
 public class ChatFacadeService {
     private final ChatRoomService chatRoomService;
     private final ValidRoomCount validRoomCount;
+    private final ValidExistRoom validExistRoom;
 
     private final MemberRepository memberRepository;
     private final ChatRoomRepository chatRoomRepository;
@@ -36,7 +38,12 @@ public class ChatFacadeService {
         Member me = memberRepository.findByLoginId(principal.getName())
                 .orElseThrow(() -> new DistanceException(ErrorCode.NOT_EXIST_MEMBER)); //나 2
 
+        if(validExistRoom.ExistRoom(me,opponent).isPresent()){
+            return validExistRoom.ExistRoom(me,opponent).get();
+        }
+
         validRoomCount.checkRoom(opponent, me, flag);
+
 
         ChatRoom chatRoom = ChatRoom.builder()
                 .roomName(opponent.getNickName())

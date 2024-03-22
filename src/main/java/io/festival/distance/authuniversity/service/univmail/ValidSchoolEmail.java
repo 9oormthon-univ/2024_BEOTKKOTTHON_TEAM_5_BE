@@ -1,4 +1,4 @@
-package io.festival.distance.domain.member.validsignup;
+package io.festival.distance.authuniversity.service.univmail;
 
 import io.festival.distance.domain.member.repository.MemberRepository;
 import io.festival.distance.exception.DistanceException;
@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class ValidSchoolEmail {
     private final MemberRepository memberRepository;
-
     public boolean duplicateCheckSchoolEmail(String schoolEmail){
         if(memberRepository.existsBySchoolEmail(schoolEmail))
             throw new DistanceException(ErrorCode.EXIST_EMAIL);

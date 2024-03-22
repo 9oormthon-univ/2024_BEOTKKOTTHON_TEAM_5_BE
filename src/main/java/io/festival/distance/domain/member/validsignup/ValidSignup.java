@@ -8,10 +8,12 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class ValidSignup {
     private final ValidLoginId validLoginId;
-    private final ValidSchoolEmail validSchoolEmail;
 
     public boolean validationSignup(MemberSignDto signDto){
-        return validSchoolEmail.duplicateCheckSchoolEmail(signDto.schoolEmail())
-                && validLoginId.duplicateCheckLoginId(signDto.loginId());
+        return validLoginId.duplicateCheckLoginId(signDto.loginId());
+    }
+
+    public boolean validationLoginId(String loginId){
+        return validLoginId.duplicateCheckLoginId(loginId);
     }
 }

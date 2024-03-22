@@ -15,13 +15,15 @@ import io.festival.distance.domain.firebase.service.FCMService;
 @RequiredArgsConstructor //gpsService 생성자 자동 생성
 @CrossOrigin //모든 외부 도메인의 요청을 허용한다.
 public class FCMController {
+
 	private final FCMService fcmService;
+
 	/** NOTE
 	 * FCM 푸시 알림 전송 API
 	 */
-	// @GetMapping(value = "/send/{clientToken}")
-	// public ResponseEntity<notificationDto> sendFCM(@PathVariable String clientToken) {
-	// 	notificationDto notification = FCMService.sendNotification(clientToken);
-	// 	return ResponseEntity.ok(notification);
-	// }
+	@GetMapping(value = "/send/{clientToken}")
+	public ResponseEntity<notificationDto> sendFCM(@PathVariable String clientToken) {
+		notificationDto notification = fcmService.sendNotification(clientToken);
+		return ResponseEntity.ok(notification);
+	}
 }

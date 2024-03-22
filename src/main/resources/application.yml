@@ -16,6 +16,18 @@ spring:
         format_sql: true
         default_batch_fetch_size: 100
         dialect: org.hibernate.dialect.MySQL8Dialect
+  mail:
+    host: ${MAIL_HOST}
+    port: ${MAIL_PORT}
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          starttls:
+            enable: true
+          auth: true
+
 logging.level:
   org.hibernate.SQL: debug
   org.hibernate.type: info
@@ -25,3 +37,10 @@ jwt:
   header: ${JWT_HEADER}
   secret: ${JWT_SECRET_KEY}
   token-validity-in-seconds: ${JWT_EXPIRATION}
+
+fcm:
+  project-id: ${PROJECT_ID}
+  private-key: ${PRIVATE_KEY}
+  private-key-id: ${PRIVATE_KEY_ID}
+  client-email: ${CLIENT_EMAIL}
+  client-id: ${CLIENT_ID}

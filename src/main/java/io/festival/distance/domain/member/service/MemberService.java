@@ -40,8 +40,6 @@ public class MemberService {
      */
     @Transactional
     public Long createMember(MemberSignDto signDto) {
-        if(!validSignup.validationSignup(signDto))
-            throw new IllegalStateException("입력이 유효하지 않습니다!");
         Member member = Member.builder()
                 .schoolEmail(signDto.schoolEmail())
                 .loginId(signDto.loginId())
