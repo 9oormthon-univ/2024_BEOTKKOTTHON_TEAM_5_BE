@@ -1,5 +1,6 @@
 package io.festival.distance.authuniversity.config.mail;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -9,15 +10,23 @@ import java.util.Properties;
 
 @Configuration
 public class MailConfig {
+    @Value("${spring.mail.host}")
+    private String mailHost;
+    @Value("${spring.mail.username}")
+    private String mailUsername;
+    @Value("${spring.mail.password}")
+    private String mailPassword;
+    @Value("${spring.mail.port}")
+    private String mailPort;
     @Bean
     public JavaMailSender javaMailService() {
         JavaMailSenderImpl javaMailSender = new JavaMailSenderImpl();
 
-        javaMailSender.setHost("smtp.gmail.com");
-        javaMailSender.setUsername("seoulcafecheckin@gmail.com");
-        javaMailSender.setPassword("eckakmucntyhuaze");
+        javaMailSender.setHost(mailHost);
+        javaMailSender.setUsername(mailUsername);
+        javaMailSender.setPassword(mailPassword);
 
-        javaMailSender.setPort(465);
+        javaMailSender.setPort(Integer.parseInt(mailPort));
 
         javaMailSender.setJavaMailProperties(getMailProperties());
 
