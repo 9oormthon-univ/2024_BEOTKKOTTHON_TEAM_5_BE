@@ -26,7 +26,7 @@ public class MailController {
     /** NOTE
      * 학교 이름 선택시 해당 도메인 값 return
      */
-    @GetMapping("check/univ-domain")
+    @PostMapping("/check/univ-domain")
     public ResponseEntity<String> checkDomain(@RequestBody SchoolNameDto schoolNameDto){
         return ResponseEntity.ok(sendSchoolDomain.sendDomain(schoolNameDto.schoolName()));
     }
@@ -34,7 +34,7 @@ public class MailController {
     /** NOTE
      * 존재하는 이메일인지 중복 확인
      */
-    @GetMapping("/check/email")
+    @PostMapping("/check/email")
     public ResponseEntity<Boolean> checkSchoolEmail(@RequestBody EmailDto emailDto){
         return ResponseEntity.ok(universityMailValidService.checkMail(emailDto.schoolEmail()));
     }
@@ -42,7 +42,7 @@ public class MailController {
     /** NOTE
      * 이메일 전송
      */
-    @GetMapping("/send/email")
+    @PostMapping("/send/email")
     public ResponseEntity<Void> sendEmail(@RequestBody EmailDto emailDto) throws MessagingException {
         certificationNumber = authenticateMail.sendNumber(emailDto.schoolEmail());
         return ResponseEntity.ok().build();
@@ -51,7 +51,7 @@ public class MailController {
     /** NOTE
      * 인증번호가 일치하는지 확인
      */
-    @GetMapping("/certificate/email")
+    @PostMapping("/certificate/email")
     public ResponseEntity<Boolean> certificationNumber(@RequestBody CertificateDto certificateDto){
         return ResponseEntity.ok(authenticateMail.checkCertificationNumber(certificateDto.number(),certificationNumber));
     }
