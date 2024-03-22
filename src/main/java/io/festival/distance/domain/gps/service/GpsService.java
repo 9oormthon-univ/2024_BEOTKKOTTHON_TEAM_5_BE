@@ -2,6 +2,7 @@ package io.festival.distance.domain.gps.service;
 
 import java.util.List;
 
+import io.festival.distance.domain.gps.dto.MemberIdPairDto;
 import io.festival.distance.domain.member.service.MemberService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -68,8 +69,18 @@ public class GpsService {
 			.matchedUsers(matchedUserList)
 			.build();
 	}
+
 	/** NOTE
-	 * 두 점 사이의 거리를 계산하는 메서드 (Haversine 공식 이용)
+	 * 두 '유저' 사이의 거리를 계산하는 메서드
+	 */
+	public double getDistance(MemberIdPairDto memberIdPairDto){
+		Member member1 = memberService.findMember(memberIdPairDto.id1());
+		Member member2 = memberService.findMember(memberIdPairDto.id2());
+		return calculateDistance(member1.getLatitude(), member1.getLongitude(), member2.getLatitude(), member2.getLongitude());
+	}
+
+	/** NOTE
+	 * 두 '점' 사이의 거리를 계산하는 메서드 (Haversine 공식 이용)
 	 */
 	private static double calculateDistance(double x1, double y1, double x2, double y2) {
 		double radius = 6371; // 지구 반지름(km)
