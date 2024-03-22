@@ -43,4 +43,8 @@ public class ChatMessage extends BaseTimeEntity { //채팅 메시지
     public void readCountUpdate(int currentMemberCount){
         this.unreadCount-=currentMemberCount;
     }
+
+    public void setMessage(String message){
+        this.chatMessage=message;
+    }
 }

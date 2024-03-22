@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -37,6 +38,7 @@ public class ChatRoomService {
                     ChatRoom chatRoom = roomMember.getChatRoom();
                     Member opponent=memberRepository.findByNickName(roomMember.getMyRoomName());
                     ChatMessage message = chatMessageRepository.findTop1ByChatRoomOrderByCreateDt(chatRoom);
+                    String lastMessage=Objects.isNull(message)?"새로운 채팅방이 생성되었습니다!": message.getChatMessage();
                     return ChatRoomInfoDto.builder()
                             .chatRoomId(chatRoom.getChatRoomId())
                             .roomName(roomMember.getMyRoomName())
@@ -44,7 +46,7 @@ public class ChatRoomService {
                             .modifyDt(roomMember.getModifyDt())
                             .opponentMemberId(opponent.getMemberId())
                             .memberCharacter(opponent.getMemberCharacter())
-                            .lastMessage(message.getChatMessage())
+                            .lastMessage(lastMessage)
                             .build();
                 })
                 .collect(Collectors.toList());
