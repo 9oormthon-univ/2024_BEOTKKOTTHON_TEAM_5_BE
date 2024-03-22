@@ -24,6 +24,7 @@ public class SendMailService {
                         "<br/>" + userEmail + "님 " +
                         "<br/>인증번호 입니다." +
                         "<br/>인증번호 :   <h2>" + tempPassword + "</h2>")
+                .tempPw(tempPassword)
                 .build();
     }
     public String getTempPassword() {
