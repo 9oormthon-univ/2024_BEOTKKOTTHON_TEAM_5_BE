@@ -73,9 +73,9 @@ public class GpsService {
 	/** NOTE
 	 * 두 '유저' 사이의 거리를 계산하는 메서드
 	 */
-	public double getDistance(MemberIdPairDto memberIdPairDto){
-		Member member1 = memberService.findMember(memberIdPairDto.id1());
-		Member member2 = memberService.findMember(memberIdPairDto.id2());
+	public double getDistance(long id1, long id2){
+		Member member1 = memberService.findMember(id1);
+		Member member2 = memberService.findMember(id2);
 		return calculateDistance(member1.getLatitude(), member1.getLongitude(), member2.getLatitude(), member2.getLongitude());
 	}
 
