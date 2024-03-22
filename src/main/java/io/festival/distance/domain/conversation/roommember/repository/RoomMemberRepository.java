@@ -20,4 +20,7 @@ public interface RoomMemberRepository extends JpaRepository<RoomMember, Long> {
     void deleteByChatRoomAndMember(ChatRoom chatRoom,Member member);
 
     boolean existsByMemberAndChatRoom(Member member,ChatRoom chatRoom);
+
+    Integer countByChatRoomAndLastReadMessageIdGreaterThan(ChatRoom chatRoom,
+                                                                    Long lastMessageId);
 }
