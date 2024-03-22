@@ -14,6 +14,7 @@ import io.festival.distance.domain.firebase.service.FCMService;
 import io.festival.distance.domain.gps.dto.GpsDto;
 import io.festival.distance.domain.gps.dto.GpsResponseDto;
 import io.festival.distance.domain.gps.dto.MatchResponseDto;
+import io.festival.distance.domain.gps.dto.MemberIdPairDto;
 import io.festival.distance.domain.gps.service.GpsService;
 import lombok.RequiredArgsConstructor;
 import io.festival.distance.domain.firebase.dto.notificationDto;
@@ -41,5 +42,10 @@ public class GpsController {
 	@GetMapping(value = "/matching", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<MatchResponseDto> matching(Principal principal) {
 		return ResponseEntity.ok(gpsService.matchUser(principal.getName()));
+	}
+
+	@GetMapping(value = "/distance")
+	public ResponseEntity<Double> distance(@RequestBody MemberIdPairDto memberIdPairDto) {
+		return ResponseEntity.ok(gpsService.getDistance(memberIdPairDto));
 	}
 }
