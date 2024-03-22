@@ -17,14 +17,10 @@ public class FirebaseConfig {
 	 * GoogleCredentials 객체를 생성 (Firebase에 접근시 서버 인증 정보)
  	 */
 	// Firebase Admin SDK private key 파일 경로
-	static final String FILEPATH = "firebaseAdminSDKPrivateKey.json";;
-
-	@Value("MY_JSON")
-	private String myJson;
+	static final String FILENAME = "firebaseAdminSDKPrivateKey.json";;
 
 	@PostConstruct //spring 어플리케이션 실행될 때 아래 코드 바로 실행됨
 	public void firebaseInitialize() {
-		System.out.println("myJson: " + myJson);
 		try {
 			System.out.println("절대경로>>> "+ System.getProperty("user.dir"));
 			System.out.println(new File("").getAbsolutePath());

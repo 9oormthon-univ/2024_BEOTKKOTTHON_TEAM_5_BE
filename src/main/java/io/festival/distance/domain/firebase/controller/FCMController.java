@@ -19,9 +19,9 @@ public class FCMController {
 	/** NOTE
 	 * FCM 푸시 알림 전송 API
 	 */
-	@GetMapping(value = "/send/{clientToken}")
-	public ResponseEntity<notificationDto> sendFCM(@PathVariable String clientToken) {
-		notificationDto notification = FCMService.sendNotification(clientToken);
-		return ResponseEntity.ok(notification);
-	}
+	// @GetMapping(value = "/send/{clientToken}")
+	// public ResponseEntity<notificationDto> sendFCM(@PathVariable String clientToken) {
+	// 	notificationDto notification = FCMService.sendNotification(clientToken);
+	// 	return ResponseEntity.ok(notification);
+	// }
 }
