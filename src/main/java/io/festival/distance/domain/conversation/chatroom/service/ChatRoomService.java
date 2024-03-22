@@ -37,8 +37,17 @@ public class ChatRoomService {
                 .map(roomMember -> {
                     ChatRoom chatRoom = roomMember.getChatRoom();
                     Member opponent=memberRepository.findByNickName(roomMember.getMyRoomName());
+
+                    System.out.println(">>>>>"+ opponent.getMemberId());
+
                     ChatMessage message = chatMessageRepository.findTop1ByChatRoomOrderByCreateDtDesc(chatRoom);
+
                     String lastMessage=Objects.isNull(message)?"새로운 채팅방이 생성되었습니다!": message.getChatMessage();
+                    System.out.println(roomMember.getLastReadMessageId());
+                    Integer count = roomMemberRepository.countByChatRoomAndLastReadMessageIdGreaterThan(chatRoom, roomMember.getLastReadMessageId());
+
+                    System.out.println(count);
+
                     return ChatRoomInfoDto.builder()
                             .chatRoomId(chatRoom.getChatRoomId())
                             .roomName(roomMember.getMyRoomName())
@@ -47,6 +56,7 @@ public class ChatRoomService {
                             .opponentMemberId(opponent.getMemberId())
                             .memberCharacter(opponent.getMemberCharacter())
                             .lastMessage(lastMessage)
+                            .askedCount(count)
                             .build();
                 })
                 .collect(Collectors.toList());

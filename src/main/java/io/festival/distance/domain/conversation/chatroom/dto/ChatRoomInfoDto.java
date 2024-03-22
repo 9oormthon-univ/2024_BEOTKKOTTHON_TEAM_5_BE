@@ -1,6 +1,7 @@
 package io.festival.distance.domain.conversation.chatroom.dto;
 
 import io.festival.distance.domain.conversation.chatroom.entity.ChatRoom;
+import io.swagger.models.auth.In;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -20,6 +21,7 @@ public class ChatRoomInfoDto {
     private Long opponentMemberId;
     private String memberCharacter;
     private String lastMessage;
+    private Integer askedCount;
     public ChatRoomInfoDto(ChatRoom chatRoom) {
         this.chatRoomId = chatRoom.getChatRoomId();
         this.createDt = chatRoom.getCreateDt();
