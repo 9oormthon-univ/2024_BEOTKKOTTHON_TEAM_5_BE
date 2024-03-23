@@ -51,13 +51,14 @@ public class ChatMessageService {
     @Transactional
     public void sendNotificationIfReceiverNotInChatRoom(Long senderId, Long receiverId, ChatRoom chatRoom, String chatMessage){
         // 채팅방에 받는 사람 있는지 확인
-        if(!chatRoomSessionRepository.existsByMemberIdAndChatRoom(senderId, chatRoom)){
-            // 알림을 보낼 떄 필요한 값들
-            Member sender = memberService.findMember(senderId); //받는 사람
-            String receiverNickName = memberService.findMember(receiverId).getNickName(); // 발신자의 닉네임
-            // FCM 알림 전송 발송자 닉네임이, chatMessage를 특정 clietnToken에게
-            fcmService.sendNotification(sender.getClientToken(), receiverNickName, chatMessage);
-        }
+        // if(!chatRoomSessionRepository.existsByMemberIdAndChatRoom(senderId, chatRoom)){
+        //
+        // }
+        // 알림을 보낼 떄 필요한 값들
+        Member sender = memberService.findMember(senderId); //받는 사람
+        String receiverNickName = memberService.findMember(receiverId).getNickName(); // 발신자의 닉네임
+        // FCM 알림 전송 발송자 닉네임이, chatMessage를 특정 clietnToken에게
+        fcmService.sendNotification(sender.getClientToken(), receiverNickName, chatMessage);
     }
 
     @Transactional
