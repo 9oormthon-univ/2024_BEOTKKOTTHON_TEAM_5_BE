@@ -21,33 +21,37 @@ public class RoomMemberService {
     private final ChatMessageRepository chatMessageRepository;
     private final MemberService memberService;
     private final ChatRoomService chatRoomService;
+    //private final StompController stompController;
 
     @Transactional
-    public void updateLastMessage(Long memberId,Long chatMessageId,Long roomId){
+    public void updateLastMessage(Long memberId, Long chatMessageId, Long roomId) {
         Member member = memberService.findMember(memberId);
         ChatRoom chatRoom = chatRoomService.findRoom(roomId);
-        RoomMember roomMember = roomMemberRepository.findByMemberAndChatRoom(member,chatRoom);
+        RoomMember roomMember = roomMemberRepository.findByMemberAndChatRoom(member, chatRoom);
         roomMember.updateMessageId(chatMessageId);
     }
 
-    public RoomMember findRoomMember(Member member,ChatRoom chatRoom){
-        return roomMemberRepository.findByMemberAndChatRoom(member,chatRoom);
+    public RoomMember findRoomMember(Member member, ChatRoom chatRoom) {
+        return roomMemberRepository.findByMemberAndChatRoom(member, chatRoom);
     }
 
     @Transactional
     public void goOutRoom(Long chatRoomId, Principal principal) {
         ChatRoom chatRoom = chatRoomService.findRoom(chatRoomId);
         Member member = memberService.findByLoginId(principal.getName());
-        if(roomMemberRepository.countByMember(member)==1){
-            roomMemberRepository.deleteByChatRoomAndMember(chatRoom,member);
+        if (roomMemberRepository.countByMember(member) == 1) {
+            roomMemberRepository.deleteByChatRoomAndMember(chatRoom, member);
             chatRoomService.delete(chatRoomId);
             return;
         }
-        ChatMessage leaveMessage = ChatMessage.builder()
+/*
+        ChatMessageDto dto = ChatMessageDto.builder()
                 .chatMessage(member.getNickName() + "님이 나갔습니다.")
-                .chatRoom(chatRoom)
+                .receiverId(null)
+                .senderId(null)
                 .build();
-        roomMemberRepository.deleteByChatRoomAndMember(chatRoom,member);
-        chatMessageRepository.save(leaveMessage);
+
+        stompController.sendMessage(chatRoomId,dto);*/
+        roomMemberRepository.deleteByChatRoomAndMember(chatRoom, member);
     }
 }
