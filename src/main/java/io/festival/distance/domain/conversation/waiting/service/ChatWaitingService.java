@@ -59,4 +59,10 @@ public class ChatWaitingService {
                 .waitingCount(count)
                 .build();
     }
+
+    @Transactional
+    public void deleteRoom(Long waitingRoodId,String loginId) {
+        Member member = memberService.findByLoginId(loginId);
+        chatWaitingRepository.deleteByWaitingIdAndLoveReceiver(waitingRoodId,member);
+    }
 }
