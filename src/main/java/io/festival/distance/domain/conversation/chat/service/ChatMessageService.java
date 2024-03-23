@@ -5,17 +5,12 @@ import io.festival.distance.domain.conversation.chat.dto.ChatMessageResponseDto;
 import io.festival.distance.domain.conversation.chat.entity.ChatMessage;
 import io.festival.distance.domain.conversation.chat.repository.ChatMessageRepository;
 import io.festival.distance.domain.conversation.chatroom.entity.ChatRoom;
-import io.festival.distance.domain.conversation.chatroomsession.entity.ChatRoomSession;
 import io.festival.distance.domain.conversation.chatroomsession.repository.ChatRoomSessionRepository;
 import io.festival.distance.domain.conversation.roommember.entity.RoomMember;
 import io.festival.distance.domain.conversation.roommember.service.RoomMemberService;
 import io.festival.distance.domain.firebase.service.FCMService;
 import io.festival.distance.domain.member.entity.Member;
-import io.festival.distance.domain.member.repository.MemberRepository;
-import io.festival.distance.exception.DistanceException;
 import io.festival.distance.domain.member.service.MemberService;
-import io.festival.distance.exception.ErrorCode;
-import io.peaceingaza.filtering.cusswordfilter.WordFiltering;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -30,7 +25,6 @@ import java.util.stream.Collectors;
 public class ChatMessageService {
     private final ChatMessageRepository chatMessageRepository;
     private final ChatRoomSessionRepository chatRoomSessionRepository;
-    private final MemberRepository memberRepository;
     private final RoomMemberService roomMemberService;
     private final MemberService memberService;
     private final FCMService fcmService;
@@ -47,6 +41,12 @@ public class ChatMessageService {
                 .build();
 
         return chatMessageRepository.save(message).getChatMessageId();
+    }
+
+    @Transactional(readOnly = true)
+    public boolean checkTiKiTaKa(ChatRoom chatRoom){
+        System.out.println("!!!!!!!!1");
+        return chatMessageRepository.checkTiKiTaKa(chatRoom)>=10;
     }
 
     @Transactional
@@ -66,6 +66,7 @@ public class ChatMessageService {
         ChatMessage chatMessage = chatMessageRepository.findById(chatMessageId)
                 .orElseThrow(() -> new IllegalStateException("존재하지 않는 메시지"));
         chatMessage.readCountUpdate(currentMemberCount);
+
         return ChatMessageResponseDto.builder()
                 .chatMessage(chatMessage.getChatMessage())
                 .senderName(chatMessage.getSenderName())
