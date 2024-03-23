@@ -1,5 +1,7 @@
 package io.festival.distance.domain.gps.service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -114,7 +116,9 @@ public class GpsService {
 	public double getDistance(long id1, long id2){
 		Member member1 = memberService.findMember(id1);
 		Member member2 = memberService.findMember(id2);
-		return calculateDistance(member1.getLatitude(), member1.getLongitude(), member2.getLatitude(), member2.getLongitude());
+		double distance  = calculateDistance(member1.getLatitude(), member1.getLongitude(), member2.getLatitude(), member2.getLongitude());
+		System.out.println(distance);
+		return new BigDecimal(distance).setScale(2, RoundingMode.HALF_UP).doubleValue();
 	}
 
 	/** NOTE
