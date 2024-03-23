@@ -110,6 +110,6 @@ public class MemberController {
      */
     @PostMapping("/check/email")
     public ResponseEntity<Boolean> checkEmail(@RequestBody CheckEmailDto checkEmailDto){
-        return ResponseEntity.ok(validEmail.checkValidEmail(checkEmailDto.email()));
+        return ResponseEntity.ok(validEmail.checkValidEmail(checkEmailDto.schoolEmail()));
     }
 }
