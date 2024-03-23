@@ -51,7 +51,7 @@ public class MemberService {
                 .loginId(signDto.loginId())
                 .password(encoder.encode(signDto.password()))
                 .gender(signDto.gender())
-                .nickName(signDto.department())
+                .nickName(signDto.department()+signDto.mbti())
                 .telNum(signDto.telNum())
                 .school(signDto.school())
                 .college(signDto.college())
@@ -62,7 +62,8 @@ public class MemberService {
                 .declarationCount(0)
                 .activated(true)
                 .build();
-        memberRepository.save(member);
+        Long memberId = memberRepository.save(member).getMemberId();
+        member.memberNicknameUpdate(member.getNickName()+"#"+memberId);
         validInfoDto.checkInfoDto(signDto); //hobby, tag NN 검사
         memberHobbyService.updateHobby(member, signDto.memberHobbyDto());
         memberTagService.updateTag(member, signDto.memberTagDto());
