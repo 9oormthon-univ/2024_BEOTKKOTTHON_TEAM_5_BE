@@ -58,7 +58,12 @@ public class ChatMessageService {
         Member sender = memberService.findMember(senderId); //받는 사람
         String receiverNickName = memberService.findMember(receiverId).getNickName(); // 발신자의 닉네임
         // FCM 알림 전송 발송자 닉네임이, chatMessage를 특정 clietnToken에게
-        fcmService.sendNotification(sender.getClientToken(), receiverNickName, chatMessage);
+        String clientToken = sender.getClientToken();
+        if (clientToken != null) { // clientToken이 null이 아닐 때만 FCM 알림 전송
+            fcmService.sendNotification(clientToken, receiverNickName, chatMessage);
+        } else {
+            System.out.println("client 토큰이 없어서 알림을 안 보냈습니다.");
+        }
     }
 
     @Transactional
