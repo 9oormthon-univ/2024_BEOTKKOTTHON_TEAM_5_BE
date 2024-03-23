@@ -129,6 +129,7 @@ public class MemberService {
         return MemberInfoDto.builder()
                 .memberCharacter(member.getMemberCharacter())
                 .mbti(member.getMbti())
+                .department(member.getDepartment())
                 .memberTagDto(tagDtoList)
                 .memberHobbyDto(hobbyDtoList)
                 .build();
