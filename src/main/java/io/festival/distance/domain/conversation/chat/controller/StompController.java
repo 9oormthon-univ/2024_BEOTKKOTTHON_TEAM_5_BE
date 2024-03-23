@@ -49,6 +49,6 @@ public class StompController {
             Long memberId = chatRoomSession.getMemberId();
             roomMemberService.updateLastMessage(memberId,chatMessageId,roomId); //가장 최근에 읽은 메시지 수정
         }
-        return ResponseEntity.ok(chatMessageService.generateMessage(chatMessageId,sessionByChatRoom.size())); //이걸 전달 => 맞다면 새로운 dto사용해서 가공 값 전달
+        return ResponseEntity.ok(chatMessageService.generateMessage(chatMessageId,sessionByChatRoom.size(),chatRoom)); //이걸 전달 => 맞다면 새로운 dto사용해서 가공 값 전달
     }
 }

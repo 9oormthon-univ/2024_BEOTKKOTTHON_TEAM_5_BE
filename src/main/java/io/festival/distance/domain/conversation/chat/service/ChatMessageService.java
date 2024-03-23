@@ -45,7 +45,6 @@ public class ChatMessageService {
 
     @Transactional(readOnly = true)
     public boolean checkTiKiTaKa(ChatRoom chatRoom){
-        System.out.println("!!!!!!!!1");
         return chatMessageRepository.checkTiKiTaKa(chatRoom)>=10;
     }
 
@@ -62,7 +61,7 @@ public class ChatMessageService {
     }
 
     @Transactional
-    public ChatMessageResponseDto generateMessage(Long chatMessageId,int currentMemberCount) {
+    public ChatMessageResponseDto generateMessage(Long chatMessageId,int currentMemberCount,ChatRoom chatRoom) {
         ChatMessage chatMessage = chatMessageRepository.findById(chatMessageId)
                 .orElseThrow(() -> new IllegalStateException("존재하지 않는 메시지"));
         chatMessage.readCountUpdate(currentMemberCount);
@@ -73,6 +72,7 @@ public class ChatMessageService {
                 .senderId(chatMessage.getSenderId())
                 .unreadCount(chatMessage.getUnreadCount())
                 .sendDt(chatMessage.getCreateDt())
+                .checkTiKiTaKa(checkTiKiTaKa(chatRoom))
                 .build();
     }
 

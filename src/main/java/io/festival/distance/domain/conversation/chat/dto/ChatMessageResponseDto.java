@@ -20,6 +20,7 @@ public class ChatMessageResponseDto {
     private int unreadCount;
     private Long messageId;
     private LocalDateTime sendDt;
+    private boolean checkTiKiTaKa;
 
     public ChatMessageResponseDto(ChatMessage message) {
         this.messageId=message.getChatMessageId();
