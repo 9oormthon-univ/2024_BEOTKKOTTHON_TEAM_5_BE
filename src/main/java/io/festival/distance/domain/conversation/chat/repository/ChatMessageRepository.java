@@ -19,4 +19,6 @@ public interface ChatMessageRepository extends JpaRepository<ChatMessage,Long> {
             "SELECT sender_id, LAG(sender_id) OVER (ORDER BY create_dt) AS prev_sender_id FROM chatmessage WHERE chatroom_id =:chatRoomId) AS OrderedMessages " +
             "WHERE sender_id != prev_sender_id", nativeQuery = true)
     Long checkTiKiTaKa(@Param("chatRoomId") ChatRoom  chatRoom);
+
+    void deleteAllByChatRoom(ChatRoom chatRoom);
 }

@@ -1,6 +1,5 @@
 package io.festival.distance.domain.conversation.roommember.service;
 
-import io.festival.distance.domain.conversation.chat.entity.ChatMessage;
 import io.festival.distance.domain.conversation.chat.repository.ChatMessageRepository;
 import io.festival.distance.domain.conversation.chatroom.entity.ChatRoom;
 import io.festival.distance.domain.conversation.chatroom.service.ChatRoomService;
@@ -21,7 +20,6 @@ public class RoomMemberService {
     private final ChatMessageRepository chatMessageRepository;
     private final MemberService memberService;
     private final ChatRoomService chatRoomService;
-    //private final StompController stompController;
 
     @Transactional
     public void updateLastMessage(Long memberId, Long chatMessageId, Long roomId) {
@@ -39,19 +37,14 @@ public class RoomMemberService {
     public void goOutRoom(Long chatRoomId, Principal principal) {
         ChatRoom chatRoom = chatRoomService.findRoom(chatRoomId);
         Member member = memberService.findByLoginId(principal.getName());
+        System.out.println(roomMemberRepository.countByMember(member));
         if (roomMemberRepository.countByMember(member) == 1) {
             roomMemberRepository.deleteByChatRoomAndMember(chatRoom, member);
             chatRoomService.delete(chatRoomId);
+            chatMessageRepository.deleteAllByChatRoom(chatRoom);
             return;
         }
-/*
-        ChatMessageDto dto = ChatMessageDto.builder()
-                .chatMessage(member.getNickName() + "님이 나갔습니다.")
-                .receiverId(null)
-                .senderId(null)
-                .build();
 
-        stompController.sendMessage(chatRoomId,dto);*/
         roomMemberRepository.deleteByChatRoomAndMember(chatRoom, member);
     }
 }
