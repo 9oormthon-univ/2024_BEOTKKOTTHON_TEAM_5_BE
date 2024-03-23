@@ -11,6 +11,8 @@ import io.festival.distance.domain.conversation.roommember.service.RoomMemberSer
 import io.festival.distance.domain.firebase.service.FCMService;
 import io.festival.distance.domain.member.entity.Member;
 import io.festival.distance.domain.member.service.MemberService;
+import io.festival.distance.exception.DistanceException;
+import io.festival.distance.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -24,7 +26,6 @@ import java.util.stream.Collectors;
 @Slf4j
 public class ChatMessageService {
     private final ChatMessageRepository chatMessageRepository;
-    private final ChatRoomSessionRepository chatRoomSessionRepository;
     private final RoomMemberService roomMemberService;
     private final MemberService memberService;
     private final FCMService fcmService;
@@ -32,6 +33,9 @@ public class ChatMessageService {
     @Transactional
     public Long createMessage(ChatRoom chatRoom, ChatMessageDto chatMessageDto) {
         Member member = memberService.findMember(chatMessageDto.getReceiverId());
+        if(chatMessageDto.getChatMessage().isEmpty())
+            return null;
+
         ChatMessage message = ChatMessage.builder()
                 .senderId(chatMessageDto.getSenderId())
                 .chatMessage(chatMessageDto.getChatMessage())
