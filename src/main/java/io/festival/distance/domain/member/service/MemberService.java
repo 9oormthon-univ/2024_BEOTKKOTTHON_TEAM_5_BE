@@ -5,6 +5,8 @@ import io.festival.distance.domain.member.entity.Authority;
 import io.festival.distance.domain.member.entity.Member;
 import io.festival.distance.domain.member.repository.MemberRepository;
 import io.festival.distance.domain.member.validlogin.ValidLogin;
+import io.festival.distance.domain.member.validsignup.ValidEmail;
+import io.festival.distance.domain.member.validsignup.ValidInfoDto;
 import io.festival.distance.domain.member.validsignup.ValidLoginId;
 import io.festival.distance.domain.member.validsignup.ValidSignup;
 import io.festival.distance.domain.memberhobby.service.MemberHobbyService;
@@ -26,6 +28,8 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final ValidSignup validSignup;
     private final ValidLoginId validLoginId;
+    private final ValidEmail validEmail;
+    private final ValidInfoDto validInfoDto;
     private final MemberTagService memberTagService;
     private final ValidLogin validLogin;
     private final MemberHobbyService memberHobbyService;
@@ -40,23 +44,28 @@ public class MemberService {
      */
     @Transactional
     public Long createMember(MemberSignDto signDto) {
+
         Member member = Member.builder()
-                .schoolEmail(signDto.schoolEmail())
-                .loginId(signDto.loginId())
-                .password(encoder.encode(signDto.password()))
-                .gender(signDto.gender())
-                .nickName(signDto.department())
-                .telNum(signDto.telNum())
-                .school(signDto.school())
-                .college(signDto.college())
-                .department(signDto.department())
-                .authority(Authority.ROLE_USER)
-                .declarationCount(0)
-                .activated(true)
-                .build();
-       memberRepository.save(member);
-       return member.getMemberId();
+            .schoolEmail(signDto.schoolEmail())
+            .loginId(signDto.loginId())
+            .password(encoder.encode(signDto.password()))
+            .gender(signDto.gender())
+            .nickName(signDto.department())
+            .telNum(signDto.telNum())
+            .school(signDto.school())
+            .college(signDto.college())
+            .department(signDto.department())
+            .authority(Authority.ROLE_USER)
+            .declarationCount(0)
+            .activated(true)
+            .build();
+            memberRepository.save(member);
+            validInfoDto.checkInfoDto(signDto); //hobby, tag NN 검사
+            memberHobbyService.updateHobby(member,signDto.memberHobbyDto());
+            memberTagService.updateTag(member,signDto.memberTagDto());
+        return member.getMemberId();
     }
+
 
     /** NOTE
      * 회원 PK값으로 DB에서 삭제 -> 회원탈퇴

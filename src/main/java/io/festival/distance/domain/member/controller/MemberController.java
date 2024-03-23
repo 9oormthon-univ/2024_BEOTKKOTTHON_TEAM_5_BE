@@ -2,6 +2,7 @@ package io.festival.distance.domain.member.controller;
 
 import io.festival.distance.domain.member.dto.*;
 import io.festival.distance.domain.member.service.MemberService;
+import io.festival.distance.domain.member.validsignup.ValidEmail;
 import io.festival.distance.domain.member.validsignup.ValidSignup;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,7 @@ import java.security.Principal;
 public class MemberController {
     private final MemberService memberService;
     private final ValidSignup validSignup;
+    private final ValidEmail validEmail;
     /** NOTE
      * 회원가입 API
      */
@@ -25,7 +27,7 @@ public class MemberController {
     }
 
     /** NOTE
-     * 회원탈퇴 API
+     * 회원 탈퇴 API
      */
     @DeleteMapping
     public ResponseEntity<String> delete(Principal principal){
@@ -81,7 +83,7 @@ public class MemberController {
     }
 
     /** NOTE
-     * 멤버의 프로필이 등록되어 있으면 true, 등록되어 있지 않으면 false반환
+     * 멤버의 프로필이 등록되어 있으면 true, 등록되어 있지 않으면 false 반환
      */
     @GetMapping("/check/profile")
     public ResponseEntity<Boolean> checkProfile(Principal principal){
@@ -102,5 +104,12 @@ public class MemberController {
     @PostMapping("/check/id")
     public ResponseEntity<Boolean> checkLoginId(@RequestBody CheckLoginIdDto checkLoginIdDto){
         return ResponseEntity.ok(validSignup.validationLoginId(checkLoginIdDto.loginId()));
+    }
+    /** NOTE
+     * 이메일 형식 확인
+     */
+    @PostMapping("/check/email")
+    public ResponseEntity<Boolean> checkEmail(@RequestBody CheckEmailDto checkEmailDto){
+        return ResponseEntity.ok(validEmail.checkValidEmail(checkEmailDto.schoolEmail()));
     }
 }
