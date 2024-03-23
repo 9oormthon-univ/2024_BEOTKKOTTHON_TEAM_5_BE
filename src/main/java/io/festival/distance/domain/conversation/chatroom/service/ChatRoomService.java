@@ -46,8 +46,8 @@ public class ChatRoomService {
 
                     String lastMessage=Objects.isNull(message)?"새로운 채팅방이 생성되었습니다!": message.getChatMessage();
                     System.out.println(roomMember.getLastReadMessageId());
-                    Integer count = roomMemberRepository.countByChatRoomAndLastReadMessageIdGreaterThan(chatRoom, roomMember.getLastReadMessageId());
-
+                    Integer count = chatMessageRepository.countByChatRoomAndChatMessageIdGreaterThan(chatRoom, roomMember.getLastReadMessageId());
+                    System.out.println(count);
                     return ChatRoomInfoDto.builder()
                             .chatRoomId(chatRoom.getChatRoomId())
                             .roomName(roomMember.getMyRoomName())
