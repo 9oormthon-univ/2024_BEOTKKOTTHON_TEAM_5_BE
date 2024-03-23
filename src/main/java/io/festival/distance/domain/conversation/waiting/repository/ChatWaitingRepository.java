@@ -10,7 +10,7 @@ public interface ChatWaitingRepository extends JpaRepository<ChatWaiting,Long> {
     List<ChatWaiting> findAllByLoveReceiver(Member member);
     Integer countByLoveReceiver(Member member);
 
-
-    boolean existsByLoveSenderAndLoveReceiver(Member loveSender, Member loveReceiver);
+    //selc
+    boolean existsByLoveSenderAndLoveReceiver(Member loveReceiver, Member loveSender);
     void deleteByWaitingIdAndLoveReceiver(Long waitingId, Member member);
 }

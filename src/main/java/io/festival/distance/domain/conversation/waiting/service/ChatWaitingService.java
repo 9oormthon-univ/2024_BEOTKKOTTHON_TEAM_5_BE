@@ -23,18 +23,19 @@ public class ChatWaitingService {
 
     @Transactional
     public void saveWaitingRoom(Member opponent, Member me) {
-        if(!chatWaitingRepository.existsByLoveSenderAndLoveReceiver(me,opponent)){
-            ChatWaiting chatWaiting = ChatWaiting.builder()
-                    .loveReceiver(opponent) //상대방
-                    .loveSender(me) //내가 좋아요
-                    .myRoomName(me.getNickName())
-                    .opponentRoomName(opponent.getNickName())
-                    .build();
-            System.out.println("sdsdsdsdsdsdsdsd>>>>");
-
-            Long waitingId = chatWaitingRepository.save(chatWaiting).getWaitingId();
-            System.out.println(waitingId);
+        if(chatWaitingRepository.existsByLoveSenderAndLoveReceiver(me,opponent)){
+           throw new DistanceException(ErrorCode.EXIST_WAITING_ROOM);
         }
+        ChatWaiting chatWaiting = ChatWaiting.builder()
+                .loveReceiver(opponent) //상대방
+                .loveSender(me) //내가 좋아요
+                .myRoomName(me.getNickName())
+                .opponentRoomName(opponent.getNickName())
+                .build();
+        System.out.println("sdsdsdsdsdsdsdsd>>>>");
+
+        Long waitingId = chatWaitingRepository.save(chatWaiting).getWaitingId();
+        System.out.println(waitingId);
     }
 
     @Transactional(readOnly = true)
