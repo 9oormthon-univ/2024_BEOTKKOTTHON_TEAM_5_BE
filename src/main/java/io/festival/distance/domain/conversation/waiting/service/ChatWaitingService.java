@@ -1,5 +1,6 @@
 package io.festival.distance.domain.conversation.waiting.service;
 
+import io.festival.distance.domain.conversation.waiting.dto.ChatWaitingCountDto;
 import io.festival.distance.domain.member.entity.Member;
 import io.festival.distance.domain.member.service.MemberService;
 import io.festival.distance.domain.conversation.waiting.dto.ChatWaitingDto;
@@ -19,7 +20,7 @@ public class ChatWaitingService {
     private final MemberService memberService;
 
     @Transactional
-    public void saveWaitingRoom(Member opponent,Member me){
+    public void saveWaitingRoom(Member opponent, Member me) {
         ChatWaiting chatWaiting = ChatWaiting.builder()
                 .loveReceiver(opponent) //상대방
                 .loveSender(me) //내가 좋아요
@@ -34,9 +35,9 @@ public class ChatWaitingService {
     public List<ChatWaitingDto> getWaitingRoom(String loginId) {
         Member member = memberService.findByLoginId(loginId); //나
         List<ChatWaiting> allByLoveReceiver = chatWaitingRepository.findAllByLoveReceiver(member);
-        List<ChatWaitingDto> chatWaitingDtoList=new ArrayList<>();
-        for(ChatWaiting chatWaiting: allByLoveReceiver){
-            Member opponent=memberService.findMember(chatWaiting.getLoveSender().getMemberId());
+        List<ChatWaitingDto> chatWaitingDtoList = new ArrayList<>();
+        for (ChatWaiting chatWaiting : allByLoveReceiver) {
+            Member opponent = memberService.findMember(chatWaiting.getLoveSender().getMemberId());
             ChatWaitingDto dto = ChatWaitingDto.builder()
                     .loveReceiverId(chatWaiting.getLoveReceiver().getMemberId()) //나
                     .loveSenderId(chatWaiting.getLoveSender().getMemberId()) //상대방
@@ -49,4 +50,13 @@ public class ChatWaitingService {
         return chatWaitingDtoList;
     }
 
+    @Transactional(readOnly = true)
+    public ChatWaitingCountDto countingWaitingRoom(String loginId) {
+        Member member = memberService.findByLoginId(loginId);
+        Integer count = chatWaitingRepository.countByLoveReceiver(member);
+
+        return ChatWaitingCountDto.builder()
+                .waitingCount(count)
+                .build();
+    }
 }

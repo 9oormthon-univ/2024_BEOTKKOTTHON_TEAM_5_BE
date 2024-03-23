@@ -8,6 +8,7 @@ import io.festival.distance.domain.conversation.chatroom.entity.ChatRoom;
 import io.festival.distance.domain.conversation.chatroom.repository.ChatRoomRepository;
 import io.festival.distance.domain.conversation.roommember.entity.RoomMember;
 import io.festival.distance.domain.conversation.roommember.repository.RoomMemberRepository;
+import io.festival.distance.domain.conversation.waiting.repository.ChatWaitingRepository;
 import io.festival.distance.domain.member.entity.Member;
 import io.festival.distance.domain.member.repository.MemberRepository;
 import io.festival.distance.exception.DistanceException;
@@ -27,6 +28,7 @@ public class ChatRoomService {
     private final MemberRepository memberRepository;
     private final RoomMemberRepository roomMemberRepository;
     private final ChatMessageRepository chatMessageRepository;
+
     @Transactional(readOnly = true)
     public List<ChatRoomInfoDto> findAllRoom(String loginId) {
         Member member = memberRepository.findByLoginId(loginId) //현재 로그인한 객체
@@ -45,8 +47,6 @@ public class ChatRoomService {
                     String lastMessage=Objects.isNull(message)?"새로운 채팅방이 생성되었습니다!": message.getChatMessage();
                     System.out.println(roomMember.getLastReadMessageId());
                     Integer count = roomMemberRepository.countByChatRoomAndLastReadMessageIdGreaterThan(chatRoom, roomMember.getLastReadMessageId());
-
-                    System.out.println(count);
 
                     return ChatRoomInfoDto.builder()
                             .chatRoomId(chatRoom.getChatRoomId())

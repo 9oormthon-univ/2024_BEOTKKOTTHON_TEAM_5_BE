@@ -1,6 +1,7 @@
 package io.festival.distance.domain.conversation.waiting.controller;
 
 import io.festival.distance.domain.conversation.chatroom.service.ChatFacadeService;
+import io.festival.distance.domain.conversation.waiting.dto.ChatWaitingCountDto;
 import io.festival.distance.domain.conversation.waiting.dto.ChatWaitingDto;
 import io.festival.distance.domain.conversation.waiting.service.ChatWaitingService;
 import lombok.RequiredArgsConstructor;
@@ -25,5 +26,10 @@ public class ChatWaitingController {
     @GetMapping("/accept/{waitingRoomId}")
     public ResponseEntity<Long> acceptWaiting(@PathVariable Long waitingRoomId,Principal principal){
         return ResponseEntity.ok(chatFacadeService.approveRoom(waitingRoomId,principal));
+    }
+
+    @GetMapping("/count")
+    public ResponseEntity<ChatWaitingCountDto> waitingRoomCount(Principal principal){
+        return ResponseEntity.ok(chatWaitingService.countingWaitingRoom(principal.getName()));
     }
 }
