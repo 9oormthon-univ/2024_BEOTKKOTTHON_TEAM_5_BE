@@ -61,7 +61,6 @@ public class ChatRoomService {
                 })
                 .collect(Collectors.toList());
     }
-
     @Transactional
     public void addRoomMember(Long chatRoomId, List<Member> member) {
         ChatRoom chatRoom = chatRoomRepository.findById(chatRoomId)
