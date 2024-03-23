@@ -32,4 +32,10 @@ public class ChatWaitingController {
     public ResponseEntity<ChatWaitingCountDto> waitingRoomCount(Principal principal){
         return ResponseEntity.ok(chatWaitingService.countingWaitingRoom(principal.getName()));
     }
+
+    @DeleteMapping("/{waitingRoodId}")
+    public ResponseEntity<Void> deleteWaitingRoom(@PathVariable Long waitingRoodId,Principal principal){
+        chatWaitingService.deleteRoom(waitingRoodId,principal.getName());
+        return ResponseEntity.ok().build();
+    }
 }
