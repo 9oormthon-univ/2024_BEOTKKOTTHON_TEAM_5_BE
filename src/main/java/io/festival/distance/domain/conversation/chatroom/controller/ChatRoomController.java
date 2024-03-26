@@ -40,11 +40,17 @@ public class ChatRoomController {
         return ResponseEntity.ok(chatMessageService.markAllMessagesAsRead(chatRoomService.findRoom(chatRoomId),memberService.findByLoginId(principal.getName())));
     }
 
+    /** TODO
+     * 미사용 API 정리 필요
+     */
     @DeleteMapping("/delete/{roomId}")
     public ResponseEntity<Long> deleteRoom(@PathVariable Long roomId){
         return ResponseEntity.ok(chatRoomService.delete(roomId));
     }
 
+    /** TODO
+     * 미사용 API 정리 필요
+     */
     @PostMapping("/check/badword")
     public ResponseEntity<Boolean> checkBadWord(@RequestBody ChatMessageDto chatMessageDto){
         WordFiltering wordFiltering = new WordFiltering();

@@ -32,7 +32,7 @@ public class ChatMessageService {
 
     @Transactional
     public Long createMessage(ChatRoom chatRoom, ChatMessageDto chatMessageDto) {
-        Member member = memberService.findMember(chatMessageDto.getReceiverId());
+        Member member = memberService.findMember(chatMessageDto.getReceiverId()); //나
         if(chatMessageDto.getChatMessage().isEmpty())
             return null;
 
@@ -70,6 +70,9 @@ public class ChatMessageService {
         }
     }
 
+    /** TODO
+     * 메소드 네이밍 변경 필요!
+     */
     @Transactional
     public ChatMessageResponseDto generateMessage(Long chatMessageId,int currentMemberCount,ChatRoom chatRoom) {
         ChatMessage chatMessage = chatMessageRepository.findById(chatMessageId)
@@ -101,9 +104,11 @@ public class ChatMessageService {
                 .map(ChatMessageResponseDto::new)
                 .collect(Collectors.toList());
 
+        // 현재 채팅방에 들어온 사람의 가장 최근에 읽은 곳까지 unReadCount 갱신 (다시 접속했는데 새로운 메세지가 없는 경우)
         if(!responseDtoList.isEmpty()){ //최신 메시지가 있다면
             roomMember.updateMessageId(responseDtoList.get(responseDtoList.size()-1).getMessageId());
         }
+
         return responseDtoList;
     }
 }

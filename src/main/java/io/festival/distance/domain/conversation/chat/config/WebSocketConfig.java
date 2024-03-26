@@ -23,3 +23,6 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         registry.setApplicationDestinationPrefixes("/app"); //메시지 보낼 때 사용 -> 발신
     }
 }
+//     ws://localhost:8080/meet
+//    /app/chat/1
+//    /topic/chatroom/1

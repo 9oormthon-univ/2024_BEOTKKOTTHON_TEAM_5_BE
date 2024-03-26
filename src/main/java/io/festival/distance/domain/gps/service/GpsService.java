@@ -1,25 +1,21 @@
 package io.festival.distance.domain.gps.service;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import io.festival.distance.domain.gps.dto.MemberIdPairDto;
-import io.festival.distance.domain.member.service.MemberService;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import io.festival.distance.domain.gps.dto.GpsDto;
 import io.festival.distance.domain.gps.dto.GpsResponseDto;
 import io.festival.distance.domain.gps.dto.MatchResponseDto;
 import io.festival.distance.domain.gps.dto.MatchUserDto;
 import io.festival.distance.domain.member.entity.Member;
 import io.festival.distance.domain.member.repository.MemberRepository;
-import io.festival.distance.exception.DistanceException;
-import io.festival.distance.exception.ErrorCode;
+import io.festival.distance.domain.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
