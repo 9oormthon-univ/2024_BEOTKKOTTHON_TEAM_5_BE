@@ -6,8 +6,6 @@ import io.festival.distance.domain.member.service.MemberService;
 import io.festival.distance.domain.conversation.waiting.dto.ChatWaitingDto;
 import io.festival.distance.domain.conversation.waiting.entity.ChatWaiting;
 import io.festival.distance.domain.conversation.waiting.repository.ChatWaitingRepository;
-import io.festival.distance.exception.DistanceException;
-import io.festival.distance.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,19 +21,16 @@ public class ChatWaitingService {
 
     @Transactional
     public void saveWaitingRoom(Member opponent, Member me) {
-        if(chatWaitingRepository.existsByLoveSenderAndLoveReceiver(me,opponent)){
-           throw new DistanceException(ErrorCode.EXIST_WAITING_ROOM);
-        }
-        ChatWaiting chatWaiting = ChatWaiting.builder()
+        if(!chatWaitingRepository.existsByLoveSenderAndLoveReceiver(me,opponent)){
+            ChatWaiting chatWaiting = ChatWaiting.builder()
                 .loveReceiver(opponent) //상대방
                 .loveSender(me) //내가 좋아요
                 .myRoomName(me.getNickName())
                 .opponentRoomName(opponent.getNickName())
                 .build();
-        System.out.println("sdsdsdsdsdsdsdsd>>>>");
-
-        Long waitingId = chatWaitingRepository.save(chatWaiting).getWaitingId();
-        System.out.println(waitingId);
+            Long waitingId = chatWaitingRepository.save(chatWaiting).getWaitingId();
+            System.out.println(waitingId);
+        }
     }
 
     @Transactional(readOnly = true)

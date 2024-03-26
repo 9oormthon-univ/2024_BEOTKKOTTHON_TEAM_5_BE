@@ -9,8 +9,6 @@ import java.util.List;
 public interface ChatWaitingRepository extends JpaRepository<ChatWaiting,Long> {
     List<ChatWaiting> findAllByLoveReceiver(Member member);
     Integer countByLoveReceiver(Member member);
-
-    //selc
-    boolean existsByLoveSenderAndLoveReceiver(Member loveReceiver, Member loveSender);
+    boolean existsByLoveSenderAndLoveReceiver(Member loveSender, Member loveReceiver);
     void deleteByWaitingIdAndLoveReceiver(Long waitingId, Member member);
 }
