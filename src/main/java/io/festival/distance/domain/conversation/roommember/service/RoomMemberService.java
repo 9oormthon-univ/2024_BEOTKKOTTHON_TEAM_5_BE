@@ -37,8 +37,11 @@ public class RoomMemberService {
     public void goOutRoom(Long chatRoomId, Principal principal) {
         ChatRoom chatRoom = chatRoomService.findRoom(chatRoomId);
         Member member = memberService.findByLoginId(principal.getName());
-        System.out.println(roomMemberRepository.countByMember(member));
-        if (roomMemberRepository.countByMember(member) == 1) {
+
+        System.out.println(">>>>> "+roomMemberRepository.countByChatRoom(chatRoom));
+
+
+        if (roomMemberRepository.countByChatRoom(chatRoom) == 1) {
             roomMemberRepository.deleteByChatRoomAndMember(chatRoom, member);
             chatRoomService.delete(chatRoomId);
             chatMessageRepository.deleteAllByChatRoom(chatRoom);

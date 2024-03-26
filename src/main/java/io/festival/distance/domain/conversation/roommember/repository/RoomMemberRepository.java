@@ -14,8 +14,8 @@ import java.util.Optional;
 public interface RoomMemberRepository extends JpaRepository<RoomMember, Long> {
     RoomMember findByMemberAndChatRoom(Member member, ChatRoom chatRoom);
     List<RoomMember> findAllByMember(Member member);
-
     Long countByMember(Member member);
+    Long countByChatRoom(ChatRoom chatRoom);
 
     void deleteByChatRoomAndMember(ChatRoom chatRoom,Member member);
 
