@@ -38,7 +38,7 @@ public class FirebaseProperties {
         this.auth_uri = "https://accounts.google.com/o/oauth2/auth";
         this.token_uri = "https://oauth2.googleapis.com/token";
         this.auth_provider_x509_cert_url = "https://www.googleapis.com/oauth2/v1/certs";
-        this.client_x509_cert_url = "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-3wytq%40distance-f328d.iam.gserviceaccount.com";
+        this.client_x509_cert_url = "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-rol2k%40distance-97455.iam.gserviceaccount.com";
         this.universe_domain = "googleapis.com";
     }
 
